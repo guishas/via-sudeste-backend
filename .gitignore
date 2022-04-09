@@ -1,2 +1,2 @@
 viasudeste-backend-env/
-.sqlite3
+*.sqlite3
