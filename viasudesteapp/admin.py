@@ -1,15 +1,17 @@
 from django.contrib import admin
 
-from viasudesteapp.models import Categoria, Cliente, Estado, Cidade, Midia, NotaFiscal, Pagamento, Pedido, Produto, Review, Vendedor, Wishlist
+from viasudesteapp.models import Categoria, Cliente, Estado, Cidade, Media, NotaFiscal, Pagamento, Pedido, Produto, Review, Vendedor, Wishlist
 
 # Register your models here.
+class EstadoAdmin(admin.ModelAdmin):
+    readonly_fields = ['estadoId']
+
 class DateAdmin(admin.ModelAdmin):
     readonly_fields = ['createdAt']
 
-
-admin.site.register(Estado)
+admin.site.register(Estado, EstadoAdmin)
 admin.site.register(Cidade)
-admin.site.register(Midia)
+admin.site.register(Media)
 admin.site.register(Wishlist)
 admin.site.register(Review, DateAdmin)
 admin.site.register(NotaFiscal)

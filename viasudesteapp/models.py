@@ -2,7 +2,11 @@ import datetime
 from email.policy import default
 import uuid
 from django.db import models
-import pytz
+from django.contrib.auth.hashers import make_password
+
+# Helper functions
+def upload_product_image(instance, filename):
+    return f"{instance.produtoId}-{filename}"
 
 # Create your models here.
 class Estado(models.Model):
@@ -10,7 +14,7 @@ class Estado(models.Model):
     nome = models.CharField(max_length=200)
 
     def __str__(self):
-        return '{}'.format(self.estadoId)
+        return '{}'.format(self.nome)
 
 class Cidade(models.Model):
     cidadeId = models.UUIDField(primary_key = True, default = uuid.uuid4, editable = False)
@@ -18,7 +22,7 @@ class Cidade(models.Model):
     nome = models.CharField(max_length=200)
 
     def __str__(self):
-        return '{}'.format(self.cidadeId)
+        return '{}'.format(self.nome)
 
 class Wishlist(models.Model):
     clienteId = models.CharField(max_length=200)
@@ -27,15 +31,16 @@ class Wishlist(models.Model):
     def __str__(self):
         return 'Cliente ID - {}'.format(self.clienteId)
 
-class Midia(models.Model):
-    productId = models.CharField(max_length=200)
-    imagem = models.ImageField()
+class Media(models.Model):
+    produtoId = models.CharField(max_length=200)
+    imagem = models.ImageField(upload_to = upload_product_image, blank=True, null=True)
 
     def __str__(self):
-        return '{}'.format(self.productId)
+        return '{}'.format(self.produtoId)
 
 class Review(models.Model):
     reviewId = models.UUIDField(primary_key = True, default = uuid.uuid4, editable = False)
+    clienteId = models.CharField(max_length=200)
     pedidoId = models.CharField(max_length=200)
     produtoId = models.CharField(max_length=200)
     reviewTitulo = models.CharField(max_length=200)
@@ -75,6 +80,7 @@ class Pedido(models.Model):
     produtoId = models.CharField(max_length=200)
     clienteId = models.CharField(max_length=200)
     vendedorId = models.CharField(max_length=200)
+    pagamentoId = models.CharField(max_length=200)
     pedidoQuantidadeProduto = models.IntegerField()
     pedidoStatus = models.BooleanField()
     pedidoDataCompra = models.DateTimeField(auto_now_add = True)
@@ -138,6 +144,10 @@ class Cliente(models.Model):
     clienteLatitude = models.FloatField()
     clienteLongitude = models.FloatField()
     createdAt = models.DateTimeField(auto_now_add = True)
+
+    def save(self, *args, **kwargs):
+        self.clienteSenha = make_password(self.clienteSenha)
+        super(Cliente, self).save(*args, **kwargs)
 
     def __str__(self):
         return '{}'.format(self.clienteId)
