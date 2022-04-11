@@ -79,7 +79,6 @@ def add_cidades_in_estado(request, estado_id, cidades):
 def get_user_wishlist(request, user_id):
     
     wish_list = Wishlist.objects.filter(clienteId = user_id)
-    print(wish_list)
     serialized_wishlist = WishlistSerializer(wish_list, many=True)
     
     product_list = []
