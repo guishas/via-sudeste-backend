@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Categoria, Cidade, Cliente, Estado, Media, NotaFiscal, Produto, Review, Wishlist
+from .models import Categoria, Cidade, Cliente, Estado, Media, NotaFiscal, Pagamento, Pedido, Produto, Review, Vendedor, Wishlist
 
 
 class EstadoSerializer(serializers.ModelSerializer):
@@ -31,6 +31,11 @@ class ProdutoSerializer(serializers.ModelSerializer):
         fields = ['produtoId', 'produtoCategoria', 'produtoNome', 'produtoDescricao',
          'produtoPreco', 'produtoQuantidade', 'produtoAvgScore', 'produtoQuantidadeNotas']
 
+class ProdutoSchemaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Produto
+        fields = '__all__'
+
 class CategoriaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Categoria
@@ -55,3 +60,19 @@ class ClienteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cliente
         fields = '__all__'
+
+class PagamentoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Pagamento
+        fields = '__all__'
+
+class PedidoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Pedido
+        fields = '__all__'
+
+class VendedorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Vendedor
+        fields = '__all__'
+

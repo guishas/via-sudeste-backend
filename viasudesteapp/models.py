@@ -94,6 +94,7 @@ class Pedido(models.Model):
 
 class Produto(models.Model):
     produtoId = models.UUIDField(primary_key = True, default = uuid.uuid4, editable = False)
+    produtoVendedorId = models.CharField(max_length=200)
     produtoCategoriaId = models.CharField(max_length=200)
     produtoNome = models.CharField(max_length=200)
     produtoDescricao = models.TextField()

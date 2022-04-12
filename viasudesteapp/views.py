@@ -1,10 +1,11 @@
 from msilib import schema
+from coreapi import Object
 from rest_framework.decorators import api_view
 from django.urls import path
 from rest_framework.response import Response
 from django.http import Http404
-from .models import Categoria, Cidade, Cliente, Estado, NotaFiscal, Produto, Review, Wishlist, Media
-from .serializers import CategoriaSerializer, CidadeSerializer, ClienteSerializer, EstadoSerializer, MediaSerializer, NotaFiscalSerializer, ProdutoSerializer, ReviewSerializer, WishlistSerializer
+from .models import Categoria, Cidade, Cliente, Estado, NotaFiscal, Pagamento, Pedido, Produto, Review, Vendedor, Wishlist, Media
+from .serializers import CategoriaSerializer, CidadeSerializer, ClienteSerializer, EstadoSerializer, MediaSerializer, NotaFiscalSerializer, PagamentoSerializer, PedidoSerializer, ProdutoSchemaSerializer, ProdutoSerializer, ReviewSerializer, VendedorSerializer, WishlistSerializer
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 
@@ -29,6 +30,17 @@ def get_estados(request):
 
     serialized_estados = EstadoSerializer(estados, many=True)
     return Response(serialized_estados.data)
+
+@api_view(['POST'])
+def add_estados(request, estados):
+    estados = estados.replace('_', ' ')
+    estados = estados.split('-')
+    for estado in estados:
+        est = Estado()
+        est.nome = estado
+        est.save()
+
+    return Response('Estado(s) adicionado(s) com sucesso!')
 
 @api_view(['GET'])
 def get_cidade_by_id(request, cidade_id):
@@ -168,8 +180,23 @@ def get_cliente_by_email(request, email):
 @swagger_auto_schema(method='post', request_body=ClienteSerializer, responses={200: openapi.Response('Success')})
 @api_view(['POST'])
 def create_cliente(request):
-    print(request.data)
-    return Response('teste')
+    data = request.data
+    cliente = Cliente()
+    cliente.clienteNome = data["clienteNome"]
+    cliente.clienteEmail = data["clienteEmail"]
+    cliente.clienteCelular = data["clienteCelular"]
+    cliente.clienteCPF = data["clienteCPF"]
+    cliente.clienteCEP = data["clienteCEP"]
+    cliente.clienteEndereco = data["clienteEndereco"]
+    cliente.clienteCidadeId = data["clienteCidadeId"]
+    cliente.clienteEstadoId = data["clienteEstadoId"]
+    cliente.clienteLatitude = data["clienteLatitude"]
+    cliente.clienteLongitude = data["clienteLongitude"]
+    cliente.save()
+
+    serialized_cliente = ClienteSerializer(cliente)
+
+    return Response(serialized_cliente.data)
 
 @api_view(['GET'])
 def get_categorias(request):
@@ -200,3 +227,172 @@ def create_categoria(request, nome):
 
     serialized_categoria = CategoriaSerializer(categoria)
     return Response(serialized_categoria.data)
+
+@api_view(['GET'])
+def get_pagamentos(request):
+    pagamentos = Pagamento.objects.all()
+
+    serialized_pagamentos = PagamentoSerializer(pagamentos, many=True)
+
+    return Response(serialized_pagamentos.data)
+
+@api_view(['GET'])
+def get_pagamento_by_id(request, pagamento_id):
+    pagamento = Pagamento.objects.get(pagamentoId = pagamento_id)
+    
+    serialized_pagamento = PagamentoSerializer(pagamento)
+
+    return Response(serialized_pagamento.data)
+
+@swagger_auto_schema(method='post', request_body=PagamentoSerializer, responses={200: openapi.Response('Success')})
+@api_view(['POST'])
+def create_pagamento(request):
+    data = request.data
+
+    pagamento = Pagamento()
+    pagamento.clienteId = data["clienteId"]
+    pagamento.pedidoId = data["pedidoId"]
+    pagamento.pagamentoMetodo = data["pagamentoMetodo"]
+    pagamento.pagamentoParcelas = data["pagamentoParcelas"]
+    pagamento.pagamentoValorTotal = data["pagamentoValorTotal"]
+    pagamento.pagamentoFinalCartao = data["pagamentoFinalCartao"]
+    pagamento.save()
+
+    serialized_pagamento = PagamentoSerializer(pagamento)
+    return Response(serialized_pagamento.data)
+
+@api_view(['GET'])
+def get_pedidos(request):
+    pedidos = Pedido.objects.all()
+
+    serialized_pedidos = PedidoSerializer(pedidos, many=True)
+
+    return Response(serialized_pedidos.data)
+
+@api_view(['GET'])
+def get_pedido_by_id(request, pedido_id):
+    pedido = Pedido.objects.get(pedidoId = pedido_id)
+
+    serialized_pedido = PedidoSerializer(pedido)
+
+    return Response(serialized_pedido.data)
+
+@api_view(['GET'])
+def get_pedidos_by_user_id(request, user_id):
+    pedidos = Pedido.objects.filter(userId = user_id)
+
+    serialized_pedidos = PedidoSerializer(pedidos, many=True)
+
+    return Response(serialized_pedidos.data)
+
+@swagger_auto_schema(method='post', request_body=PedidoSerializer, responses={200: openapi.Response('Success')})
+@api_view(['POST'])
+def create_pedido(request):
+    data = request.data
+
+    pedido = Pedido()
+    pedido.produtoId = data["produtoId"]
+    pedido.clienteId = data["clienteId"]
+    pedido.vendedorId = data["vendedorId"]
+    pedido.pagamentoId = data["pagamentoId"]
+    pedido.pedidoQuantidadeProduto = data["pedidoQuantidadeProduto"]
+    pedido.pedidoStatus = data["pedidoStatus"]
+    pedido.pedidoDataPagamento = data["pedidoDataPagamento"]
+    pedido.pedidoDataTransportadora = data["pedidoDataTransportadora"]
+    pedido.pedidoDataPrevista = data["pedidoDataPrevista"]
+    pedido.pedidoDataEntregue = data["pedidoDataEntregue"]
+    pedido.save()
+
+    serialized_pedido = PedidoSerializer(pedido)
+
+    return Response(serialized_pedido.data)
+
+@api_view(['GET'])
+def get_produtos(request):
+    produtos = Produto.objects.all()
+
+    serialized_produtos = ProdutoSerializer(produtos, many=True)
+
+    return Response(serialized_produtos.data)
+
+@api_view(['GET'])
+def get_produto_by_id(request, produto_id):
+    produto = Produto.objects.get(produtoId = produto_id)
+
+    serialized_produto = ProdutoSerializer(produto)
+
+    return Response(serialized_produto.data)
+
+@api_view(['GET'])
+def get_produtos_by_categoria_id(request, categoria_id):
+    produtos = Produto.objects.filter(categoriaId = categoria_id)
+
+    serialized_produtos = ProdutoSerializer(produtos, many=True)
+
+    return Response(serialized_produtos.data)
+
+@swagger_auto_schema(method='post', request_body=ProdutoSchemaSerializer, responses={200: openapi.Response('Success')})
+@api_view(['POST'])
+def create_produto(request):
+    data = request.data
+
+    produto = Produto()
+    produto.produtoCategoriaId = data["produtoCategoriaId"]
+    produto.produtoNome = data["produtoNome"]
+    produto.produtoDescricao = data["produtoDescricao"]
+    produto.produtoPreco = data["produtoPreco"]
+    produto.produtoQuantidade = data["produtoQuantidade"]
+    produto.produtoAvgScore = data["produtoAvgScore"]
+    produto.produtoQuantidadeNotas = data["produtoQuantidadeNotas"]
+    produto.save()
+
+    serialized_produto = ProdutoSchemaSerializer(produto)
+
+    return Response(serialized_produto.data)
+
+@api_view(['GET'])
+def get_vendedores(request):
+    vendedores = Vendedor.objects.all()
+
+    serialized_vendedores = VendedorSerializer(vendedores, many=True)
+
+    return Response(serialized_vendedores.data)
+
+@api_view(['GET'])
+def get_vendedor_by_id(request, vendedor_id):
+    vendedor = Vendedor.objects.get(vendedorId = vendedor_id)
+
+    serialized_vendedor = VendedorSerializer(vendedor)
+
+    return Response(serialized_vendedor.data)
+
+@api_view(['GET'])
+def get_vendedor_by_email(request, email):
+    vendedor = Vendedor.objects.get(vendedorEmail = email)
+
+    serialized_vendedor = VendedorSerializer(vendedor)
+
+    return Response(serialized_vendedor.data)
+
+@swagger_auto_schema(method='post', request_body=VendedorSerializer, responses={200: openapi.Response('Success')})
+@api_view(['POST'])
+def create_vendedor(request):
+    data = request.data
+
+    vendedor = Vendedor()
+    vendedor.vendedorNome = data["vendedorNome"]
+    vendedor.vendedorEmail = data["vendedorEmail"]
+    vendedor.vendedorSenha = data["vendedorSenha"]
+    vendedor.vendedorCelular = data["vendedorCelular"]
+    vendedor.vendedorCPF = data["vendedorCPF"]
+    vendedor.vendedorCEP = data["vendedorCEP"]
+    vendedor.vendedorEndereco = data["vendedorEndereco"]
+    vendedor.vendedorCidadeId = data["vendedorCidadeId"]
+    vendedor.vendedorEstadoId = data["vendedorEstadoId"]
+    vendedor.vendedorLatitude = data["vendedorLatitude"]
+    vendedor.vendedorLongitude = data["vendedorLongitude"]
+    vendedor.save()
+
+    serialized_vendedor = VendedorSerializer(vendedor)
+
+    return Response(serialized_vendedor.data)
