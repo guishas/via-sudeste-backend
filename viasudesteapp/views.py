@@ -1,17 +1,14 @@
+from msilib import schema
 from rest_framework.decorators import api_view
 from django.urls import path
 from rest_framework.response import Response
 from django.http import Http404
-from .models import Cidade, Cliente, Estado, NotaFiscal, Produto, Review, Wishlist, Media
-from .serializers import CidadeSerializer, ClienteSerializer, EstadoSerializer, MediaSerializer, NotaFiscalSerializer, ProdutoSerializer, ReviewSerializer, WishlistSerializer
-from rest_framework_swagger.views import get_swagger_view
+from .models import Categoria, Cidade, Cliente, Estado, NotaFiscal, Produto, Review, Wishlist, Media
+from .serializers import CategoriaSerializer, CidadeSerializer, ClienteSerializer, EstadoSerializer, MediaSerializer, NotaFiscalSerializer, ProdutoSerializer, ReviewSerializer, WishlistSerializer
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 
-schema_view = get_swagger_view(title = 'Viasudeste API V1')
 # Create your views here.
-
-urlpatterns = [
-    path(r'^$', schema_view),
-]
 
 @api_view(['GET'])
 def get_estado_by_id(request, estado_id):
@@ -167,3 +164,39 @@ def get_cliente_by_email(request, email):
 
     serialized_cliente = ClienteSerializer(cliente)
     return Response(serialized_cliente.data)
+
+@swagger_auto_schema(method='post', request_body=ClienteSerializer, responses={200: openapi.Response('Success')})
+@api_view(['POST'])
+def create_cliente(request):
+    print(request.data)
+    return Response('teste')
+
+@api_view(['GET'])
+def get_categorias(request):
+    try:
+        categorias = Categoria.objects.all()
+    except Categoria.DoesNotExist:
+        raise Http404()
+    
+    serialized_categorias = CategoriaSerializer(categorias, many=True)
+    return Response(serialized_categorias.data)
+
+@api_view(['GET'])
+def get_categoria_by_id(request, categoria_id):
+    try:
+        categoria = Categoria.objects.get(categoriaId = categoria_id)
+    except Categoria.DoesNotExist:
+        raise Http404()
+
+    serialized_categoria = CategoriaSerializer(categoria)
+    return Response(serialized_categoria.data)
+
+@api_view(['POST'])
+def create_categoria(request, nome):
+
+    categoria = Categoria()
+    categoria.categoriaNome = nome
+    categoria.save()
+
+    serialized_categoria = CategoriaSerializer(categoria)
+    return Response(serialized_categoria.data)

@@ -19,4 +19,8 @@ urlpatterns = [
     path('api/clientes/', views.get_clientes),
     path('api/clientes/<str:user_id>', views.get_cliente_by_id),
     path('api/clientes/email/<str:email>', views.get_cliente_by_email),
+    path('api/clientes/adicionar/', views.create_cliente),
+    path('api/categorias/', views.get_categorias),
+    path('api/categorias/<str:categoria_id>', views.get_categoria_by_id),
+    path('api/categorias/adicionar/<str:nome>', views.create_categoria),
 ]
