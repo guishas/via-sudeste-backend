@@ -14,7 +14,6 @@ urlpatterns = [
     path('api/medias/', views.get_medias),
     path('api/medias/<str:product_id>', views.get_medias_by_product_id),
     path('api/medias/picture/', views.post_media),
-    path('api/medias/adicionar/', views.UploadFileView.as_view()),
     path('api/reviews/', views.get_reviews),
     path('api/reviews/<str:product_id>', views.get_reviews_by_product_id),
     path('api/notasfiscais/', views.get_notas_ficais),
