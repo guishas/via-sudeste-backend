@@ -1,7 +1,6 @@
-from msilib import schema
-from coreapi import Object
-from rest_framework.decorators import api_view
-from django.urls import path
+from rest_framework.decorators import api_view, action
+from rest_framework.parsers import MultiPartParser, FormParser, FileUploadParser
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.http import Http404
 from .models import Categoria, Cidade, Cliente, Estado, NotaFiscal, Pagamento, Pedido, Produto, Review, Vendedor, Wishlist, Media
@@ -124,6 +123,46 @@ def get_medias_by_product_id(request, product_id):
         media['imagem'] = 'http://localhost:8000' + media['imagem']
 
     return Response(serialized_medias.data)
+
+@swagger_auto_schema(
+    operation_id='Send file',
+    operation_description='Send file via multipart/form-data',
+    method='post',
+    manual_parameters=[
+        openapi.Parameter('produtoId', openapi.IN_FORM, type=openapi.TYPE_STRING, description='ID do produto'),
+        openapi.Parameter('file', openapi.IN_FORM, type=openapi.TYPE_FILE, description='File to upload'),
+    ],
+    responses={200: openapi.Response('Success')}
+)
+@api_view(['POST'])
+def post_media(request):
+    return Response('testando')
+
+class UploadFileView(APIView):
+
+    parser_classes = [MultiPartParser]
+
+    @swagger_auto_schema(
+        operation_id='Send file',
+        operation_description='Send file via multipart/form-data',
+        manual_parameters=[
+            openapi.Parameter('produtoId', openapi.IN_FORM, type=openapi.TYPE_STRING, description='ID do produto'),
+            openapi.Parameter('file', openapi.IN_FORM, type=openapi.TYPE_FILE, description='File to upload'),
+        ],
+        responses={200: openapi.Response('Success')}
+    )
+
+    def post(self, request, *args, **kwargs):
+        id = request.POST.get('produtoId')
+        image = request.FILES.get('file')
+
+        media = Media()
+        media.produtoId = id
+        media.imagem = image
+        media.save()
+
+        serialized_media = MediaSerializer(media)
+        return Response(serialized_media.data)
 
 @api_view(['GET'])
 def get_reviews(request):

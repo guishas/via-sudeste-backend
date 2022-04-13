@@ -32,6 +32,7 @@ class Wishlist(models.Model):
         return 'Cliente ID - {}'.format(self.clienteId)
 
 class Media(models.Model):
+    mediaId = models.UUIDField(primary_key = True, default = uuid.uuid4, editable = False)
     produtoId = models.CharField(max_length=200)
     imagem = models.ImageField(upload_to = upload_product_image, blank=True, null=True)
 
