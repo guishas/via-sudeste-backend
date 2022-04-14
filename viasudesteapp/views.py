@@ -103,6 +103,19 @@ def get_wishlist(request):
 
     return Response(serialized_wishlist.data)
 
+@swagger_auto_schema(method='post', request_body=WishlistSerializer, responses={200: openapi.Response('Success')})
+@api_view(['POST'])
+def create_wishlist(request):
+    data = request.data
+
+    wishlist = Wishlist()
+    wishlist.clienteId = data["clienteId"]
+    wishlist.produtoId = data["produtoId"]
+    wishlist.save()
+
+    serialized_wishlist = WishlistSerializer(wishlist)
+    return Response(serialized_wishlist.data)
+
 @api_view(['GET'])
 def get_medias(request):
     medias = Media.objects.all()
@@ -148,6 +161,13 @@ def post_media(request):
     
     return Response(serialized_media.data)
 
+@api_view(['DELETE'])
+def delete_media(request, media_id):
+    media = Media.objects.get(mediaId = media_id)
+    media.delete()
+
+    return Response('Media deletada com sucesso!')
+
 @api_view(['GET'])
 def get_reviews(request):
     reviews = Review.objects.all()
@@ -162,6 +182,23 @@ def get_reviews_by_product_id(request, product_id):
 
     return Response(serialized_reviews.data)
 
+@swagger_auto_schema(method='post', request_body=ReviewSerializer, responses={200: openapi.Response('Success')})
+@api_view(['POST'])
+def create_review(request):
+    data = request.data
+
+    review = Review()
+    review.clienteId = data["clienteId"]
+    review.pedidoId = data["pedidoId"]
+    review.produtoId = data["produtoId"]
+    review.reviewTitulo = data["reviewTitulo"]
+    review.reviewComentario = data["reviewComentario"]
+    review.reviewScore = data["reviewScore"]
+    review.save()
+
+    serialized_review = ReviewSerializer(review)
+    return Response(serialized_review.data)
+
 @api_view(['GET'])
 def get_notas_ficais(request):
     nfes = NotaFiscal.objects.all()
@@ -174,6 +211,23 @@ def get_nota_fiscal_by_pedido_id(request, pedido_id):
     nfe = NotaFiscal.objects.get(pedidoId = pedido_id)
     serialized_nfe = NotaFiscalSerializer(nfe)
 
+    return Response(serialized_nfe.data)
+
+@swagger_auto_schema(method='post', request_body=NotaFiscalSerializer, responses={200: openapi.Response('Success')})
+@api_view(['POST'])
+def create_nota_fiscal(request):
+    data = request.data
+
+    nfe = NotaFiscal()
+    nfe.pedidoId = data["pedidoId"]
+    nfe.produtoId = data["produtoId"]
+    nfe.vendedorId = data["vendedorId"]
+    nfe.nfeQuantidade = data["nfeQuantidade"]
+    nfe.nfePreco = data["nfePreco"]
+    nfe.nfeFrete = data["nfeFrete"]
+    nfe.save()
+
+    serialized_nfe = NotaFiscalSerializer(nfe)
     return Response(serialized_nfe.data)
 
 @api_view(['GET'])
@@ -251,6 +305,13 @@ def create_categoria(request, nome):
     serialized_categoria = CategoriaSerializer(categoria)
     return Response(serialized_categoria.data)
 
+@api_view(['DELETE'])
+def delete_categoria(request, categoria_id):
+    categoria = Categoria.objects.get(categoriaId = categoria_id)
+    categoria.delete()
+
+    return Response('Categoria deletada com sucesso!')
+
 @api_view(['GET'])
 def get_pagamentos(request):
     pagamentos = Pagamento.objects.all()
@@ -283,6 +344,13 @@ def create_pagamento(request):
 
     serialized_pagamento = PagamentoSerializer(pagamento)
     return Response(serialized_pagamento.data)
+
+@api_view(['DELETE'])
+def delete_pagamento(request, pagamento_id):
+    pagamento = Pagamento.objects.get(pagamentoId = pagamento_id)
+    pagamento.delete()
+
+    return Response('Pagamento deletado com sucesso!')
 
 @api_view(['GET'])
 def get_pedidos(request):

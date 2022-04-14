@@ -34,7 +34,8 @@ class ProdutoSerializer(serializers.ModelSerializer):
 class ProdutoSchemaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Produto
-        fields = '__all__'
+        fields = ['produtoVendedorId', 'produtoCategoriaId', 'produtoNome', 
+        'produtoDescricao', 'produtoPreco', 'produtoQuantidade']
 
 class CategoriaSerializer(serializers.ModelSerializer):
     class Meta:
