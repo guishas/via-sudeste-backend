@@ -127,6 +127,7 @@ class Vendedor(models.Model):
     vendedorEstadoId = models.CharField(max_length=200)
     vendedorLatitude = models.FloatField()
     vendedorLongitude = models.FloatField()
+    vendedorIsVendedor = models.BooleanField(default=True, editable=False)
     createdAt = models.DateTimeField(auto_now_add = True)
 
     def __str__(self):
@@ -145,6 +146,7 @@ class Cliente(models.Model):
     clienteEstadoId = models.CharField(max_length=200)
     clienteLatitude = models.FloatField()
     clienteLongitude = models.FloatField()
+    clienteIsVendedor = models.BooleanField(default=False, editable=False)
     createdAt = models.DateTimeField(auto_now_add = True)
 
     def save(self, *args, **kwargs):
