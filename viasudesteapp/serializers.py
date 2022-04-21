@@ -62,6 +62,15 @@ class ClienteSerializer(serializers.ModelSerializer):
         model = Cliente
         fields = '__all__'
 
+class ClienteSchemaSerializer(serializers.ModelSerializer):
+
+    clienteId = serializers.UUIDField(write_only = True)
+
+    class Meta:
+        model = Cliente
+        fields = ["clienteId", "clienteNome", "clienteEmail", "clienteCelular", "clienteCPF",
+         "clienteCEP", "clienteEndereco", "clienteCidadeId", "clienteEstadoId", "clienteLatitude", "clienteLongitude"]
+
 class PagamentoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Pagamento

@@ -3,7 +3,7 @@ from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
 from django.http import Http404
 from .models import Categoria, Cidade, Cliente, Estado, NotaFiscal, Pagamento, Pedido, Produto, Review, Vendedor, Wishlist, Media
-from .serializers import CategoriaSerializer, CidadeSerializer, ClienteSerializer, EstadoSerializer, MediaSerializer, NotaFiscalSerializer, PagamentoSerializer, PedidoSerializer, ProdutoSchemaSerializer, ProdutoSerializer, ReviewSerializer, VendedorSerializer, WishlistSerializer
+from .serializers import CategoriaSerializer, CidadeSerializer, ClienteSchemaSerializer, ClienteSerializer, EstadoSerializer, MediaSerializer, NotaFiscalSerializer, PagamentoSerializer, PedidoSerializer, ProdutoSchemaSerializer, ProdutoSerializer, ReviewSerializer, VendedorSerializer, WishlistSerializer
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 
@@ -39,6 +39,13 @@ def add_estados(request, estados):
         est.save()
 
     return Response('Estado(s) adicionado(s) com sucesso!')
+
+@api_view(['DELETE'])
+def delete_estado_by_id(request, estado_id):
+    estado = Estado.objects.get(estadoId = estado_id)
+    estado.delete()
+
+    return Response('Estado deletado com sucesso!')
 
 @api_view(['GET'])
 def get_cidade_by_id(request, cidade_id):
@@ -80,7 +87,14 @@ def add_cidades_in_estado(request, estado_id, cidades):
         cid.nome = cidade
         cid.save()
 
-    return Response('Cidades adicionados com sucesso!')
+    return Response('Cidades adicionadas com sucesso!')
+
+@api_view(['DELETE'])
+def delete_cidade_by_id(request, cidade_id):
+    cidade = Cidade.objects.get(cidadeId = cidade_id)
+    cidade.delete()
+
+    return Response('Cidade deletada com sucesso')
 
 @api_view(['GET'])
 def get_user_wishlist(request, user_id):
@@ -115,6 +129,13 @@ def create_wishlist(request):
 
     serialized_wishlist = WishlistSerializer(wishlist)
     return Response(serialized_wishlist.data)
+
+@api_view(['DELETE'])
+def delete_wishlist_by_id(request, wishlist_id):
+    wishlist = Wishlist.objects.get(wishlistId = wishlist_id)
+    wishlist.delete()
+
+    return Response('Wishlist deletada com sucesso!')
 
 @api_view(['GET'])
 def get_medias(request):
@@ -199,6 +220,13 @@ def create_review(request):
     serialized_review = ReviewSerializer(review)
     return Response(serialized_review.data)
 
+@api_view(['DELETE'])
+def delete_review_by_id(request, review_id):
+    review = Review.objects.get(reviewId = review_id)
+    review.delete()
+
+    return Response('Review deletada com sucesso!')
+
 @api_view(['GET'])
 def get_notas_ficais(request):
     nfes = NotaFiscal.objects.all()
@@ -229,6 +257,13 @@ def create_nota_fiscal(request):
 
     serialized_nfe = NotaFiscalSerializer(nfe)
     return Response(serialized_nfe.data)
+
+@api_view(['DELETE'])
+def delete_notafiscal_by_id(request, notafiscal_id):
+    nfe = NotaFiscal.objects.get(nfeId = notafiscal_id)
+    nfe.delete()
+
+    return Response('Nota Fiscal deletada com sucesso!')
 
 @api_view(['GET'])
 def get_clientes(request):
@@ -269,11 +304,42 @@ def create_cliente(request):
     cliente.clienteEstadoId = data["clienteEstadoId"]
     cliente.clienteLatitude = data["clienteLatitude"]
     cliente.clienteLongitude = data["clienteLongitude"]
+    cliente.clienteIsVendedor = data["clienteIsVendedor"]
     cliente.save()
 
     serialized_cliente = ClienteSerializer(cliente)
 
     return Response(serialized_cliente.data)
+
+@swagger_auto_schema(method='put', request_body=ClienteSchemaSerializer, responses={200: openapi.Response('Success')})
+@api_view(['PUT'])
+def update_cliente(request):
+    data = request.data
+    cliente_id = data["clienteId"]
+    cliente = Cliente.objects.get(clienteId = cliente_id)
+    
+    cliente.clienteNome = data["clienteNome"]
+    cliente.clienteEmail = data["clienteEmail"]
+    cliente.clienteCelular = data["clienteCelular"]
+    cliente.clienteCPF = data["clienteCPF"]
+    cliente.clienteCEP = data["clienteCEP"]
+    cliente.clienteEndereco = data["clienteEndereco"]
+    cliente.clienteCidadeId = data["clienteCidadeId"]
+    cliente.clienteEstadoId = data["clienteEstadoId"]
+    cliente.clienteLatitude = data["clienteLatitude"]
+    cliente.clienteLongitude = data["clienteLongitude"]
+    cliente.save()
+
+    serialized_cliente = ClienteSerializer(cliente)
+
+    return Response(serialized_cliente.data)
+
+@api_view(['DELETE'])
+def delete_cliente_by_id(request, cliente_id):
+    cliente = Cliente.objects.get(clienteId = cliente_id)
+    cliente.delete()
+
+    return Response('Cliente deletado com sucesso!')
 
 @api_view(['GET'])
 def get_categorias(request):
@@ -398,6 +464,13 @@ def create_pedido(request):
 
     return Response(serialized_pedido.data)
 
+@api_view(['DELETE'])
+def delete_pedido_by_id(request, pedido_id):
+    pedido = Pedido.objects.get(pedidoId = pedido_id)
+    pedido.delete()
+
+    return Response('Pedido deletado com sucesso!')
+
 @api_view(['GET'])
 def get_produtos(request):
     produtos = Produto.objects.all()
@@ -441,6 +514,13 @@ def create_produto(request):
 
     return Response(serialized_produto.data)
 
+@api_view(['DELETE'])
+def delete_produto_by_id(request, produto_id):
+    produto = Produto.objects.get(produtoId = produto_id)
+    produto.delete()
+
+    return Response('Produto deletado com sucesso!')
+
 @api_view(['GET'])
 def get_vendedores(request):
     vendedores = Vendedor.objects.all()
@@ -482,8 +562,16 @@ def create_vendedor(request):
     vendedor.vendedorEstadoId = data["vendedorEstadoId"]
     vendedor.vendedorLatitude = data["vendedorLatitude"]
     vendedor.vendedorLongitude = data["vendedorLongitude"]
+    vendedor.vendedorIsVendedor = data["vendedorIsVendedor"]
     vendedor.save()
 
     serialized_vendedor = VendedorSerializer(vendedor)
 
     return Response(serialized_vendedor.data)
+
+@api_view(['DELETE'])
+def delete_vendedor_by_id(request, vendedor_id):
+    vendedor = Vendedor.objects.get(vendedorId = vendedor_id)
+    vendedor.delete()
+
+    return Response('Vendedor deletado com sucesso!')
