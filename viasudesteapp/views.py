@@ -3,7 +3,7 @@ from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
 from django.http import Http404
 from .models import Categoria, Cidade, Cliente, Estado, NotaFiscal, Pagamento, Pedido, Produto, Review, Vendedor, Wishlist, Media
-from .serializers import CategoriaSerializer, CidadeSerializer, ClienteSchemaSerializer, ClienteSerializer, EstadoSerializer, MediaSerializer, NotaFiscalSerializer, PagamentoSerializer, PedidoSerializer, ProdutoSchemaSerializer, ProdutoSerializer, ReviewSerializer, VendedorSerializer, WishlistSerializer
+from .serializers import CategoriaSchemaSerializer, CategoriaSerializer, CidadeSchemaSerializer, CidadeSerializer, ClienteSchemaSerializer, ClienteSerializer, EstadoSchemaSerializer, EstadoSerializer, MediaSerializer, NotaFiscalSchemaSerializer, NotaFiscalSerializer, PagamentoSerializer, PedidoSerializer, ProdutoSchemaSerializer, ProdutoSerializer, ReviewSerializer, VendedorSerializer, WishlistSerializer
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 
@@ -46,6 +46,19 @@ def delete_estado_by_id(request, estado_id):
     estado.delete()
 
     return Response('Estado deletado com sucesso!')
+
+@swagger_auto_schema(method='put', request_body=EstadoSchemaSerializer, responses={200: openapi.Response('Success')})
+@api_view(['PUT'])
+def update_estado(request):
+    data = request.data
+    estado_id = data["estadoId"]
+    estado = Estado.objects.get(estadoId = estado_id)
+
+    estado.nome = data["nome"]
+    estado.save()
+
+    serialized_estado = EstadoSerializer(estado)
+    return Response(serialized_estado.data)
 
 @api_view(['GET'])
 def get_cidade_by_id(request, cidade_id):
@@ -95,6 +108,20 @@ def delete_cidade_by_id(request, cidade_id):
     cidade.delete()
 
     return Response('Cidade deletada com sucesso')
+
+@swagger_auto_schema(method='put', request_body=CidadeSchemaSerializer, responses={200: openapi.Response('Success')})
+@api_view(['PUT'])
+def update_cidade(request):
+    data = request.data
+    cidade_id = data["cidadeId"]
+    cidade = Cidade.objects.get(cidadeId = cidade_id)
+
+    cidade.estadoId = data["estadoId"]
+    cidade.nome = data["nome"]
+    cidade.save()
+
+    serialized_cidade = CidadeSerializer(cidade)
+    return Response(serialized_cidade.data)
 
 @api_view(['GET'])
 def get_user_wishlist(request, user_id):
@@ -265,6 +292,24 @@ def delete_notafiscal_by_id(request, notafiscal_id):
 
     return Response('Nota Fiscal deletada com sucesso!')
 
+@swagger_auto_schema(method='put', request_body=NotaFiscalSchemaSerializer, responses={200: openapi.Response('Success')})
+@api_view(['PUT'])
+def update_notafiscal(request):
+    data = request.data
+    nfe_id = data["nfeId"]
+    nfe = NotaFiscal.objects.get(nfeId = nfe_id)
+    
+    nfe.pedidoId = data["pedidoId"]
+    nfe.produtoId = data["produtoId"]
+    nfe.vendedorId = data["vendedorId"]
+    nfe.nfeQuantidade = data["nfeQuantidade"]
+    nfe.nfePreco = data["nfePreco"]
+    nfe.nfeFrete = data["nfeFrete"]
+    nfe.save()
+
+    serialized_nfe = NotaFiscalSerializer(nfe)
+    return Response(serialized_nfe.data)
+
 @api_view(['GET'])
 def get_clientes(request):
     clientes = Cliente.objects.all()
@@ -377,6 +422,19 @@ def delete_categoria(request, categoria_id):
     categoria.delete()
 
     return Response('Categoria deletada com sucesso!')
+
+@swagger_auto_schema(method='put', request_body=CategoriaSchemaSerializer, responses={200: openapi.Response('Success')})
+@api_view(['PUT'])
+def update_categoria(request):
+    data = request.data
+    categoria_id = data["categoriaId"]
+    categoria = Categoria.objects.get(categoriaId = categoria_id)
+
+    categoria.categoriaNome = data["categoriaNome"]
+    categoria.save()
+
+    serialized_categoria = CategoriaSerializer(categoria)
+    return Response(serialized_categoria.data)
 
 @api_view(['GET'])
 def get_pagamentos(request):

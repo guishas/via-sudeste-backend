@@ -7,7 +7,23 @@ class EstadoSerializer(serializers.ModelSerializer):
         model = Estado
         fields = ['estadoId', 'nome']
 
+class EstadoSchemaSerializer(serializers.ModelSerializer):
+
+    estadoId = serializers.UUIDField(write_only = True)
+
+    class Meta:
+        model = Estado
+        fields = ['estadoId', 'nome']
+
 class CidadeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Cidade
+        fields = ['cidadeId', 'estadoId', 'nome']
+
+class CidadeSchemaSerializer(serializers.ModelSerializer):
+
+    cidadeId = serializers.UUIDField(write_only = True)
+
     class Meta:
         model = Cidade
         fields = ['cidadeId', 'estadoId', 'nome']
@@ -42,6 +58,14 @@ class CategoriaSerializer(serializers.ModelSerializer):
         model = Categoria
         fields = '__all__'
 
+class CategoriaSchemaSerializer(serializers.ModelSerializer):
+
+    categoriaId = serializers.UUIDField(write_only = True)
+
+    class Meta:
+        model = Categoria
+        fields = ['categoriaId', 'categoriaNome']
+
 class MediaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Media
@@ -56,6 +80,14 @@ class NotaFiscalSerializer(serializers.ModelSerializer):
     class Meta:
         model = NotaFiscal
         fields = '__all__'
+
+class NotaFiscalSchemaSerializer(serializers.ModelSerializer):
+
+    nfeId = serializers.UUIDField(write_only = True)
+
+    class Meta:
+        model = NotaFiscal
+        fields = ['nfeId', 'pedidoId', 'produtoId', 'vendedorId', 'nfeQuantidade', 'nfePreco', 'nfeFrete']
 
 class ClienteSerializer(serializers.ModelSerializer):
     class Meta:
