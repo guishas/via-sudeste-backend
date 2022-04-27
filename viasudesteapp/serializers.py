@@ -33,6 +33,14 @@ class WishlistSerializer(serializers.ModelSerializer):
         model = Wishlist
         fields = ['clienteId', 'produtoId']
 
+class WishlistSchemaSerializer(serializers.ModelSerializer):
+
+    wishlistId = serializers.UUIDField(write_only = True)
+
+    class Meta:
+        model = Wishlist
+        fields = ['wishlistId', 'clienteId', 'produtoId']
+
 class ProdutoSerializer(serializers.ModelSerializer):
 
     produtoCategoria = serializers.SerializerMethodField('get_categoria')
@@ -44,7 +52,7 @@ class ProdutoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Produto
-        fields = ['produtoId', 'produtoCategoria', 'produtoNome', 'produtoDescricao',
+        fields = ['produtoId', 'produtoVendedorId', 'produtoCategoria', 'produtoNome', 'produtoDescricao',
          'produtoPreco', 'produtoQuantidade', 'produtoAvgScore', 'produtoQuantidadeNotas']
 
 class ProdutoSchemaSerializer(serializers.ModelSerializer):
@@ -52,6 +60,15 @@ class ProdutoSchemaSerializer(serializers.ModelSerializer):
         model = Produto
         fields = ['produtoVendedorId', 'produtoCategoriaId', 'produtoNome', 
         'produtoDescricao', 'produtoPreco', 'produtoQuantidade']
+
+class ProdutoUpdateSchemaSerializer(serializers.ModelSerializer):
+
+    produtoId = serializers.UUIDField(write_only = True)
+
+    class Meta:
+        model = Produto
+        fields = ['produtoId', 'produtoVendedorId', 'produtoCategoriaId', 'produtoNome', 'produtoDescricao', 'produtoPreco',
+                  'produtoQuantidade', 'produtoAvgScore', 'produtoQuantidadeNotas']
 
 class CategoriaSerializer(serializers.ModelSerializer):
     class Meta:
@@ -75,6 +92,14 @@ class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
         fields = '__all__'
+
+class ReviewSchemaSerializer(serializers.ModelSerializer):
+
+    reviewId = serializers.UUIDField(write_only = True)
+
+    class Meta:
+        model = Review
+        fields = ['reviewId', 'clienteId', 'pedidoId', 'produtoId', 'reviewTitulo', 'reviewComentario', 'reviewScore']
 
 class NotaFiscalSerializer(serializers.ModelSerializer):
     class Meta:
@@ -108,13 +133,40 @@ class PagamentoSerializer(serializers.ModelSerializer):
         model = Pagamento
         fields = '__all__'
 
+class PagamentoSchemaSerializer(serializers.ModelSerializer):
+
+    pagamentoId = serializers.UUIDField(write_only = True)
+
+    class Meta:
+        model = Pagamento
+        fields = ['pagamentoId', 'clienteId', 'pedidoId', 'pagamentoMetodo', 'pagamentoParcelas', 
+                  'pagamentoValorTotal', 'pagamentoFinalCartao']
+
 class PedidoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Pedido
         fields = '__all__'
+
+class PedidoSchemaSerializer(serializers.ModelSerializer):
+
+    pedidoId = serializers.UUIDField(write_only = True)
+
+    class Meta:
+        model = Pedido
+        fields = ['pedidoId', 'produtoId', 'clienteId', 'vendedorId', 'pagamentoId', 'pedidoQuantidadeProduto',
+                  'pedidoStatus', 'pedidoDataCompra', 'pedidoDataPagamento', 'pedidoDataTransportadora', 'pedidoDataPrevista',
+                  'pedidoDataEntregue']
 
 class VendedorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vendedor
         fields = '__all__'
 
+class VendedorSchemaSerializer(serializers.ModelSerializer):
+
+    vendedorId = serializers.UUIDField(write_only = True)
+
+    class Meta:
+        model = Vendedor
+        fields = ["vendedorId", "vendedorNome", "vendedorEmail", "vendedorCelular", "vendedorCPF",
+         "vendedorCEP", "vendedorEndereco", "vendedorCidadeId", "vendedorEstadoId", "vendedorLatitude", "vendedorLongitude"]

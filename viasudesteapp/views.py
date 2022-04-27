@@ -3,7 +3,7 @@ from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
 from django.http import Http404
 from .models import Categoria, Cidade, Cliente, Estado, NotaFiscal, Pagamento, Pedido, Produto, Review, Vendedor, Wishlist, Media
-from .serializers import CategoriaSchemaSerializer, CategoriaSerializer, CidadeSchemaSerializer, CidadeSerializer, ClienteSchemaSerializer, ClienteSerializer, EstadoSchemaSerializer, EstadoSerializer, MediaSerializer, NotaFiscalSchemaSerializer, NotaFiscalSerializer, PagamentoSerializer, PedidoSerializer, ProdutoSchemaSerializer, ProdutoSerializer, ReviewSerializer, VendedorSerializer, WishlistSerializer
+from .serializers import CategoriaSchemaSerializer, CategoriaSerializer, CidadeSchemaSerializer, CidadeSerializer, ClienteSchemaSerializer, ClienteSerializer, EstadoSchemaSerializer, EstadoSerializer, MediaSerializer, NotaFiscalSchemaSerializer, NotaFiscalSerializer, PagamentoSchemaSerializer, PagamentoSerializer, PedidoSchemaSerializer, PedidoSerializer, ProdutoSchemaSerializer, ProdutoSerializer, ProdutoUpdateSchemaSerializer, ReviewSchemaSerializer, ReviewSerializer, VendedorSchemaSerializer, VendedorSerializer, WishlistSchemaSerializer, WishlistSerializer
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 
@@ -164,6 +164,20 @@ def delete_wishlist_by_id(request, wishlist_id):
 
     return Response('Wishlist deletada com sucesso!')
 
+@swagger_auto_schema(method='put', request_body=WishlistSchemaSerializer, responses={200: openapi.Response('Success')})
+@api_view(['PUT'])
+def update_wishlist(request):
+    data = request.data
+    wishlist_id = data["wishlistId"]
+    wishlist = Wishlist.objects.get(wishlistId = wishlist_id)
+
+    wishlist.clienteId = data["clienteId"]
+    wishlist.produtoId = data["produtoId"]
+    wishlist.save()
+
+    serialized_wishlist = WishlistSerializer(wishlist)
+    return Response(serialized_wishlist.data)
+
 @api_view(['GET'])
 def get_medias(request):
     medias = Media.objects.all()
@@ -253,6 +267,24 @@ def delete_review_by_id(request, review_id):
     review.delete()
 
     return Response('Review deletada com sucesso!')
+
+@swagger_auto_schema(method='put', request_body=ReviewSchemaSerializer, responses={200: openapi.Response('Success')})
+@api_view(['PUT'])
+def update_review(request):
+    data = request.data
+    review_id = data["reviewId"]
+    review = Review.objects.get(reviewId = review_id)
+
+    review.clienteId = data["clienteId"]
+    review.pedidoId = data["pedidoId"]
+    review.produtoId = data["produtoId"]
+    review.reviewTitulo = data["reviewTitulo"]
+    review.reviewComentario = data["reviewComentario"]
+    review.reviewScore = data["reviewScore"]
+    review.save()
+
+    serialized_review = ReviewSerializer(review)
+    return Response(serialized_review.data)
 
 @api_view(['GET'])
 def get_notas_ficais(request):
@@ -476,6 +508,24 @@ def delete_pagamento(request, pagamento_id):
 
     return Response('Pagamento deletado com sucesso!')
 
+@swagger_auto_schema(method='put', request_body=PagamentoSchemaSerializer, responses={200: openapi.Response('Success')})
+@api_view(['PUT'])
+def update_pagamento(request):
+    data = request.data
+    pagamento_id = data["pagamentoId"]
+    pagamento = Pagamento.objects.get(pagamentoId = pagamento_id)
+
+    pagamento.clienteId = data["clienteId"]
+    pagamento.pedidoId = data["pedidoId"]
+    pagamento.pagamentoMetodo = data["pagamentoMetodo"]
+    pagamento.pagamentoParcelas = data["pagamentoParcelas"]
+    pagamento.pagamentoValorTinal = data["pagamentoValorTinal"]
+    pagamento.pagamentoFinalCartao = data["pagamentoFinalCartao"]
+    pagamento.save()
+
+    serialized_pagamento = PagamentoSerializer(pagamento)
+    return Response(serialized_pagamento.data)
+
 @api_view(['GET'])
 def get_pedidos(request):
     pedidos = Pedido.objects.all()
@@ -529,6 +579,29 @@ def delete_pedido_by_id(request, pedido_id):
 
     return Response('Pedido deletado com sucesso!')
 
+@swagger_auto_schema(method='put', request_body=PedidoSchemaSerializer, responses={200: openapi.Response('Success')})
+@api_view(['PUT'])
+def update_pedido(request):
+    data = request.data
+    pedido_id = data["pedidoId"]
+    pedido = Pedido.objects.get(pedidoId = pedido_id)
+
+    pedido.produtoId = data["produtoId"]
+    pedido.clienteId = data["clienteId"]
+    pedido.vendedorId = data["vendedorId"]
+    pedido.pagamentoId = data["pagamentoId"]
+    pedido.pedidoQuantidadeProduto = data["pedidoQuantidadeProduto"]
+    pedido.pedidoStatus = data["pedidoStatus"]
+    pedido.pedidoDataCompra = data["pedidoDataCompra"]
+    pedido.pedidoDataPagamento = data["pedidoDataPagamento"]
+    pedido.pedidoDataTransportadora = data["pedidoDataTransportadora"]
+    pedido.pedidoDataPrevista = data["pedidoDataPrevista"]
+    pedido.pedidoDataEntregue = data["pedidoDataEntregue"]
+    pedido.save()
+
+    serialized_pedido = PedidoSerializer(pedido)
+    return Response(serialized_pedido.data)
+
 @api_view(['GET'])
 def get_produtos(request):
     produtos = Produto.objects.all()
@@ -579,6 +652,26 @@ def delete_produto_by_id(request, produto_id):
 
     return Response('Produto deletado com sucesso!')
 
+@swagger_auto_schema(method='put', request_body=ProdutoUpdateSchemaSerializer, responses={200: openapi.Response('Success')})
+@api_view(['PUT'])
+def update_produto(request):
+    data = request.data
+    produto_id = data["produtoId"]
+    produto = Produto.objects.get(produtoId = produto_id)
+
+    produto.produtoVendedorId = data["produtoVendedorId"]
+    produto.produtoCategoriaId = data["produtoCategoriaId"]
+    produto.produtoNome = data["produtoNome"]
+    produto.produtoDescricao = data["produtoDescricao"]
+    produto.produtoPreco = data["produtoPreco"]
+    produto.produtoQuantidade = data["produtoQuantidade"]
+    produto.produtoAvgScore = data["produtoAvgScore"]
+    produto.produtoQuantidadeNotas = data["produtoQuantidadeNotas"]
+    produto.save()
+
+    serialized_produto = ProdutoSerializer(produto)
+    return Response(serialized_produto.data)
+    
 @api_view(['GET'])
 def get_vendedores(request):
     vendedores = Vendedor.objects.all()
@@ -633,3 +726,25 @@ def delete_vendedor_by_id(request, vendedor_id):
     vendedor.delete()
 
     return Response('Vendedor deletado com sucesso!')
+
+@swagger_auto_schema(method='put', request_body=VendedorSchemaSerializer, responses={200: openapi.Response('Success')})
+@api_view(['PUT'])
+def update_vendedor(request):
+    data = request.data
+    vendedor_id = data["vendedorId"]
+    vendedor = Vendedor.objects.get(vendedorId = vendedor_id)
+
+    vendedor.vendedorNome = data["vendedorNome"]
+    vendedor.vendedorEmail = data["vendedorEmail"]
+    vendedor.vendedorCelular = data["vendedorCelular"]
+    vendedor.vendedorCPF = data["vendedorCPF"]
+    vendedor.vendedorCEP = data["vendedorCEP"]
+    vendedor.vendedorEndereco = data["vendedorEndereco"]
+    vendedor.vendedorCidadeId = data["vendedorCidadeId"]
+    vendedor.vendedorEstadoId = data["vendedorEstadoId"]
+    vendedor.vendedorLatitude = data["vendedorLatitude"]
+    vendedor.vendedorLongitude = data["vendedorLongitude"]
+    vendedor.save()
+
+    serialized_vendedor = VendedorSerializer(vendedor)
+    return Response(serialized_vendedor.data)
