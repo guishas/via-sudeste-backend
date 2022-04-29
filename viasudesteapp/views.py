@@ -757,9 +757,7 @@ def update_vendedor(request):
 def login(request, email, password):
     try:
         cliente = Cliente.objects.get(clienteEmail = email)
-
-        print(cliente.clienteSenha)
-        print(hashlib.md5(password.encode()).hexdigest())
+        
         if not cliente.clienteSenha == hashlib.md5(password.encode()).hexdigest():
             return Response({'errorStatus': '404', 'errorMessage': 'Verifique sua senha.'})
 
@@ -767,4 +765,4 @@ def login(request, email, password):
         return Response({'errorStatus': '404', 'errorMessage': 'Não existe usuário com esse email.'})
 
     serialized_cliente = ClienteSerializer(cliente)
-    return Response(serialized_cliente.data)
+    return Response({'statusCode': '200', 'data': serialized_cliente.data})
