@@ -2,7 +2,7 @@ import datetime
 from email.policy import default
 import uuid
 from django.db import models
-from django.contrib.auth.hashers import make_password
+import hashlib
 
 # Helper functions
 def upload_product_image(instance, filename):
@@ -127,7 +127,7 @@ class Vendedor(models.Model):
     vendedorEstadoId = models.CharField(max_length=200)
     vendedorLatitude = models.FloatField()
     vendedorLongitude = models.FloatField()
-    vendedorIsVendedor = models.BooleanField(default=True, editable=False)
+    vendedorIsVendedor = models.BooleanField(default=True)
     createdAt = models.DateTimeField(auto_now_add = True)
 
     def __str__(self):
@@ -146,11 +146,11 @@ class Cliente(models.Model):
     clienteEstadoId = models.CharField(max_length=200)
     clienteLatitude = models.FloatField()
     clienteLongitude = models.FloatField()
-    clienteIsVendedor = models.BooleanField(default=False, editable=False)
+    clienteIsVendedor = models.BooleanField(default=False)
     createdAt = models.DateTimeField(auto_now_add = True)
 
     def save(self, *args, **kwargs):
-        self.clienteSenha = make_password(self.clienteSenha)
+        self.clienteSenha = hashlib.md5(self.clienteSenha.encode()).hexdigest()
         super(Cliente, self).save(*args, **kwargs)
 
     def __str__(self):

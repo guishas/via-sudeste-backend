@@ -1,3 +1,4 @@
+import hashlib
 from rest_framework import serializers
 from .models import Categoria, Cidade, Cliente, Estado, Media, NotaFiscal, Pagamento, Pedido, Produto, Review, Vendedor, Wishlist
 
@@ -117,16 +118,30 @@ class NotaFiscalSchemaSerializer(serializers.ModelSerializer):
 class ClienteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cliente
-        fields = '__all__'
+        fields = ["clienteId", "clienteNome", "clienteEmail", "clienteSenha", "clienteCelular", "clienteCPF",
+         "clienteCEP", "clienteEndereco", "clienteCidadeId", "clienteEstadoId", "clienteLatitude", "clienteLongitude", "clienteIsVendedor"]
+
+class ClienteCreateSchemaSerializer(serializers.ModelSerializer):
+
+    clienteSenha = serializers.CharField(write_only = True)
+
+    class Meta:
+        model = Cliente
+        fields = ["clienteId", "clienteNome", "clienteEmail", "clienteSenha", "clienteCelular", "clienteCPF",
+         "clienteCEP", "clienteEndereco", "clienteCidadeId", "clienteEstadoId", "clienteLatitude", "clienteLongitude", "clienteIsVendedor"]
 
 class ClienteSchemaSerializer(serializers.ModelSerializer):
 
     clienteId = serializers.UUIDField(write_only = True)
+    clienteSenha = serializers.SerializerMethodField('get_senha')
+
+    def get_senha(self, cliente_object):
+        return hashlib.md5(cliente_object.clienteSenha.encode()).hexdigest()
 
     class Meta:
         model = Cliente
-        fields = ["clienteId", "clienteNome", "clienteEmail", "clienteCelular", "clienteCPF",
-         "clienteCEP", "clienteEndereco", "clienteCidadeId", "clienteEstadoId", "clienteLatitude", "clienteLongitude"]
+        fields = ["clienteId", "clienteNome", "clienteEmail", "clienteSenha", "clienteCelular", "clienteCPF",
+         "clienteCEP", "clienteEndereco", "clienteCidadeId", "clienteEstadoId", "clienteLatitude", "clienteLongitude", "clienteIsVendedor"]
 
 class PagamentoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -169,4 +184,4 @@ class VendedorSchemaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vendedor
         fields = ["vendedorId", "vendedorNome", "vendedorEmail", "vendedorCelular", "vendedorCPF",
-         "vendedorCEP", "vendedorEndereco", "vendedorCidadeId", "vendedorEstadoId", "vendedorLatitude", "vendedorLongitude"]
+         "vendedorCEP", "vendedorEndereco", "vendedorCidadeId", "vendedorEstadoId", "vendedorLatitude", "vendedorLongitude", "vendedorIsVendedor"]

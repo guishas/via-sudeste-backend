@@ -66,4 +66,5 @@ urlpatterns = [
     path('api/vendedores/adicionar/', views.create_vendedor),
     path('api/vendedores/deletar/<str:vendedor_id>', views.delete_vendedor_by_id),
     path('api/vendedores/atualizar/', views.update_vendedor),
+    path('api/clientes/login/<str:email>/<str:password>', views.login),
 ]

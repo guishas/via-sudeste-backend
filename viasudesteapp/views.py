@@ -3,9 +3,10 @@ from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
 from django.http import Http404
 from .models import Categoria, Cidade, Cliente, Estado, NotaFiscal, Pagamento, Pedido, Produto, Review, Vendedor, Wishlist, Media
-from .serializers import CategoriaSchemaSerializer, CategoriaSerializer, CidadeSchemaSerializer, CidadeSerializer, ClienteSchemaSerializer, ClienteSerializer, EstadoSchemaSerializer, EstadoSerializer, MediaSerializer, NotaFiscalSchemaSerializer, NotaFiscalSerializer, PagamentoSchemaSerializer, PagamentoSerializer, PedidoSchemaSerializer, PedidoSerializer, ProdutoSchemaSerializer, ProdutoSerializer, ProdutoUpdateSchemaSerializer, ReviewSchemaSerializer, ReviewSerializer, VendedorSchemaSerializer, VendedorSerializer, WishlistSchemaSerializer, WishlistSerializer
+from .serializers import CategoriaSchemaSerializer, CategoriaSerializer, CidadeSchemaSerializer, CidadeSerializer, ClienteCreateSchemaSerializer, ClienteSchemaSerializer, ClienteSerializer, EstadoSchemaSerializer, EstadoSerializer, MediaSerializer, NotaFiscalSchemaSerializer, NotaFiscalSerializer, PagamentoSchemaSerializer, PagamentoSerializer, PedidoSchemaSerializer, PedidoSerializer, ProdutoSchemaSerializer, ProdutoSerializer, ProdutoUpdateSchemaSerializer, ReviewSchemaSerializer, ReviewSerializer, VendedorSchemaSerializer, VendedorSerializer, WishlistSchemaSerializer, WishlistSerializer
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
+import hashlib
 
 # Create your views here.
 
@@ -366,13 +367,14 @@ def get_cliente_by_email(request, email):
     serialized_cliente = ClienteSerializer(cliente)
     return Response(serialized_cliente.data)
 
-@swagger_auto_schema(method='post', request_body=ClienteSerializer, responses={200: openapi.Response('Success')})
+@swagger_auto_schema(method='post', request_body=ClienteCreateSchemaSerializer, responses={200: openapi.Response('Success')})
 @api_view(['POST'])
 def create_cliente(request):
     data = request.data
     cliente = Cliente()
     cliente.clienteNome = data["clienteNome"]
     cliente.clienteEmail = data["clienteEmail"]
+    cliente.clienteSenha = data["clienteSenha"]
     cliente.clienteCelular = data["clienteCelular"]
     cliente.clienteCPF = data["clienteCPF"]
     cliente.clienteCEP = data["clienteCEP"]
@@ -405,6 +407,7 @@ def update_cliente(request):
     cliente.clienteEstadoId = data["clienteEstadoId"]
     cliente.clienteLatitude = data["clienteLatitude"]
     cliente.clienteLongitude = data["clienteLongitude"]
+    cliente.clienteIsVendedor = data["clienteIsVendedor"]
     cliente.save()
 
     serialized_cliente = ClienteSerializer(cliente)
@@ -744,7 +747,24 @@ def update_vendedor(request):
     vendedor.vendedorEstadoId = data["vendedorEstadoId"]
     vendedor.vendedorLatitude = data["vendedorLatitude"]
     vendedor.vendedorLongitude = data["vendedorLongitude"]
+    vendedor.vendedorIsVendedor = data["vendedorIsVendedor"]
     vendedor.save()
 
     serialized_vendedor = VendedorSerializer(vendedor)
     return Response(serialized_vendedor.data)
+
+@api_view(['GET'])
+def login(request, email, password):
+    try:
+        cliente = Cliente.objects.get(clienteEmail = email)
+
+        print(cliente.clienteSenha)
+        print(hashlib.md5(password.encode()).hexdigest())
+        if not cliente.clienteSenha == hashlib.md5(password.encode()).hexdigest():
+            return Response({'errorStatus': '404', 'errorMessage': 'Verifique sua senha.'})
+
+    except Cliente.DoesNotExist:
+        return Response({'errorStatus': '404', 'errorMessage': 'Não existe usuário com esse email.'})
+
+    serialized_cliente = ClienteSerializer(cliente)
+    return Response(serialized_cliente.data)
