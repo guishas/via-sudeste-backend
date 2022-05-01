@@ -13,15 +13,15 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 import os
 from pathlib import Path
 import dj_database_url
+import dotenv
 
-try:
-    from viasudeste.secrets import *
-except ImportError:
-    pass
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+dotenv_file = os.path.join(BASE_DIR, ".env")
+if os.path.isfile(dotenv_file):
+    dotenv.load_dotenv(dotenv_file)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
@@ -156,9 +156,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Send email
 EMAIL_HOST = 'smtp.gmail.com'
 
-EMAIL_HOST_USER = 'lunettagui@gmail.com'
+EMAIL_HOST_USER = os.environ['GMAIL_USER']
 
-EMAIL_HOST_PASSWORD = GMAIL_PASSWORD
+EMAIL_HOST_PASSWORD = os.environ['GMAIL_PASSWORD']
 
 EMAIL_PORT = 587
 

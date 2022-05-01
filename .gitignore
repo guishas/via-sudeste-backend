@@ -1,4 +1,4 @@
 viasudeste-backend-env/
 *.sqlite3
 media/
-viasudeste/secrets.py
+.env
