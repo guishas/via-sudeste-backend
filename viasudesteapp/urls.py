@@ -67,4 +67,9 @@ urlpatterns = [
     path('api/vendedores/deletar/<str:vendedor_id>', views.delete_vendedor_by_id),
     path('api/vendedores/atualizar/', views.update_vendedor),
     path('api/clientes/login/<str:email>/<str:password>', views.login),
+    path('send-email/', views.send_email),
+    path('user-not-found/', views.error),
+    path('email-sent/', views.email_sent),
+    path('redefine-password/<str:id>', views.redefine),
+    path('password-redefined/', views.redefined),
 ]

@@ -1,3 +1,4 @@
+from django.shortcuts import redirect, render
 from rest_framework.decorators import api_view, parser_classes
 from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
@@ -7,6 +8,9 @@ from .serializers import CategoriaSchemaSerializer, CategoriaSerializer, CidadeS
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 import hashlib
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import get_template
+from django.template import Context
 
 # Create your views here.
 
@@ -766,3 +770,64 @@ def login(request, email, password):
 
     serialized_cliente = ClienteSerializer(cliente)
     return Response({'statusCode': '200', 'data': serialized_cliente.data})
+
+def send_email(request):
+
+    if request.method == 'POST':
+        try:
+            email = request.POST.get('email')
+        
+            cliente = Cliente.objects.get(clienteEmail = email)
+
+        except Cliente.DoesNotExist:
+            return redirect('/user-not-found')
+
+        d = Context({'email': email})
+
+        subject = 'Recuperar senha ViaSudeste'
+        from_email = 'lunettagui@gmail.com'
+        to_email = cliente.clienteEmail
+
+        nome = cliente.clienteNome
+        link = 'https://powerful-shelf-46576.herokuapp.com/redefine-password/' + str(cliente.clienteId)
+
+        text_content = 'Olá ' + nome + '! Clique no link abaixo para redefinir sua senha!\n\n' + link
+
+        msg = EmailMultiAlternatives(subject, text_content, from_email, [to_email])
+        msg.send()
+
+        return redirect('/email-sent')
+
+    return render(request, 'viasudesteapp/send_email.html')
+
+def error(request):
+
+    if request.method == 'POST':
+        return redirect('/send-email')
+
+    return render(request, 'viasudesteapp/error.html')
+
+def email_sent(request):
+
+    return render(request, 'viasudesteapp/email_sent.html')
+
+def redefine(request, id):
+
+    if request.method == 'POST':
+        password = request.POST.get('password')
+        password_confirm = request.POST.get('password2')
+
+        if password != password_confirm:
+            return render(request, 'viasudesteapp/wrong_pass.html')
+        else:
+            cliente = Cliente.objects.get(clienteId = id)
+            cliente.clienteSenha = password
+            cliente.save()
+
+            return redirect('/password-redefined')
+
+    return render(request, 'viasudesteapp/redefine_pass.html')
+
+def redefined(request):
+
+    return render(request, 'viasudesteapp/password_redefined.html')
