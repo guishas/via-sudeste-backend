@@ -130,6 +130,10 @@ class Vendedor(models.Model):
     vendedorIsVendedor = models.BooleanField(default=True)
     createdAt = models.DateTimeField(auto_now_add = True)
 
+    def save(self, *args, **kwargs):
+        self.vendedorSenha = hashlib.md5(self.vendedorSenha.encode()).hexdigest()
+        super(Vendedor, self).save(*args, **kwargs)
+
     def __str__(self):
         return '{}'.format(self.vendedorId)
 

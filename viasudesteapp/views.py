@@ -375,24 +375,32 @@ def get_cliente_by_email(request, email):
 @api_view(['POST'])
 def create_cliente(request):
     data = request.data
-    cliente = Cliente()
-    cliente.clienteNome = data["clienteNome"]
-    cliente.clienteEmail = data["clienteEmail"]
-    cliente.clienteSenha = data["clienteSenha"]
-    cliente.clienteCelular = data["clienteCelular"]
-    cliente.clienteCPF = data["clienteCPF"]
-    cliente.clienteCEP = data["clienteCEP"]
-    cliente.clienteEndereco = data["clienteEndereco"]
-    cliente.clienteCidadeId = data["clienteCidadeId"]
-    cliente.clienteEstadoId = data["clienteEstadoId"]
-    cliente.clienteLatitude = data["clienteLatitude"]
-    cliente.clienteLongitude = data["clienteLongitude"]
-    cliente.clienteIsVendedor = data["clienteIsVendedor"]
-    cliente.save()
+    email = data["clienteEmail"]
+    try:
+        vendedor = Vendedor.objects.get(vendedorEmail = email)
+    except Vendedor.DoesNotExist:
+        try:
+            cliente = Cliente.objects.get(clienteEmail = email)
+        except Cliente.DoesNotExist:
+            cliente = Cliente()
+            cliente.clienteNome = data["clienteNome"]
+            cliente.clienteEmail = data["clienteEmail"]
+            cliente.clienteSenha = data["clienteSenha"]
+            cliente.clienteCelular = data["clienteCelular"]
+            cliente.clienteCPF = data["clienteCPF"]
+            cliente.clienteCEP = data["clienteCEP"]
+            cliente.clienteEndereco = data["clienteEndereco"]
+            cliente.clienteCidadeId = data["clienteCidadeId"]
+            cliente.clienteEstadoId = data["clienteEstadoId"]
+            cliente.clienteLatitude = data["clienteLatitude"]
+            cliente.clienteLongitude = data["clienteLongitude"]
+            cliente.clienteIsVendedor = data["clienteIsVendedor"]
+            cliente.save()
 
-    serialized_cliente = ClienteSerializer(cliente)
-
-    return Response(serialized_cliente.data)
+            serialized_cliente = ClienteSerializer(cliente)
+            return Response(serialized_cliente.data)
+        return Response({'statusCode': '400', 'errorMessage': 'Já existe um usuário com esse email'})
+    return Response({'statusCode': '400', 'errorMessage': 'Já existe um usuário com esse email'})
 
 @swagger_auto_schema(method='put', request_body=ClienteSchemaSerializer, responses={200: openapi.Response('Success')})
 @api_view(['PUT'])
@@ -707,25 +715,32 @@ def get_vendedor_by_email(request, email):
 @api_view(['POST'])
 def create_vendedor(request):
     data = request.data
+    email = data["vendedorEmail"]
+    try:
+        vendedor = Vendedor.objects.get(vendedorEmail = email)
+    except Vendedor.DoesNotExist:
+        try:
+            cliente = Cliente.objects.get(clienteEmail = email)
+        except Cliente.DoesNotExist:
+            vendedor = Vendedor()
+            vendedor.vendedorNome = data["vendedorNome"]
+            vendedor.vendedorEmail = data["vendedorEmail"]
+            vendedor.vendedorSenha = data["vendedorSenha"]
+            vendedor.vendedorCelular = data["vendedorCelular"]
+            vendedor.vendedorCPF = data["vendedorCPF"]
+            vendedor.vendedorCEP = data["vendedorCEP"]
+            vendedor.vendedorEndereco = data["vendedorEndereco"]
+            vendedor.vendedorCidadeId = data["vendedorCidadeId"]
+            vendedor.vendedorEstadoId = data["vendedorEstadoId"]
+            vendedor.vendedorLatitude = data["vendedorLatitude"]
+            vendedor.vendedorLongitude = data["vendedorLongitude"]
+            vendedor.vendedorIsVendedor = data["vendedorIsVendedor"]
+            vendedor.save()
 
-    vendedor = Vendedor()
-    vendedor.vendedorNome = data["vendedorNome"]
-    vendedor.vendedorEmail = data["vendedorEmail"]
-    vendedor.vendedorSenha = data["vendedorSenha"]
-    vendedor.vendedorCelular = data["vendedorCelular"]
-    vendedor.vendedorCPF = data["vendedorCPF"]
-    vendedor.vendedorCEP = data["vendedorCEP"]
-    vendedor.vendedorEndereco = data["vendedorEndereco"]
-    vendedor.vendedorCidadeId = data["vendedorCidadeId"]
-    vendedor.vendedorEstadoId = data["vendedorEstadoId"]
-    vendedor.vendedorLatitude = data["vendedorLatitude"]
-    vendedor.vendedorLongitude = data["vendedorLongitude"]
-    vendedor.vendedorIsVendedor = data["vendedorIsVendedor"]
-    vendedor.save()
-
-    serialized_vendedor = VendedorSerializer(vendedor)
-
-    return Response(serialized_vendedor.data)
+            serialized_vendedor = VendedorSerializer(vendedor)
+            return Response(serialized_vendedor.data)
+        return Response({'statusCode': '400', 'errorMessage': 'Já existe um usuário com esse email'})
+    return Response({'statusCode': '400', 'errorMessage': 'Já existe um usuário com esse email'})
 
 @api_view(['DELETE'])
 def delete_vendedor_by_id(request, vendedor_id):
@@ -763,24 +778,53 @@ def login(request, email, password):
         cliente = Cliente.objects.get(clienteEmail = email)
         
         if not cliente.clienteSenha == hashlib.md5(password.encode()).hexdigest():
-            return Response({'errorStatus': '404', 'errorMessage': 'Verifique sua senha.'})
+            return Response({'statusCode': '404', 'errorMessage': 'Verifique sua senha.'})
 
     except Cliente.DoesNotExist:
-        return Response({'errorStatus': '404', 'errorMessage': 'Não existe usuário com esse email.'})
+        try:
+            vendedor = Vendedor.objects.get(vendedorEmail = email)
+
+            if not vendedor.vendedorSenha == hashlib.md5(password.encode()).hexdigest():
+                return Response({'statusCode': '404', 'errorMessage': 'Verifique sua senha.'})
+            
+        except Vendedor.DoesNotExist:
+            return Response({'statusCode': '404', 'errorMessage': 'Não existe usuário com esse email.'})
+
+        serialized_vendedor = VendedorSerializer(vendedor)
+        return Response({'statusCode': '200', 'isVendedor': vendedor.vendedorIsVendedor, 'data': serialized_vendedor.data})
 
     serialized_cliente = ClienteSerializer(cliente)
-    return Response({'statusCode': '200', 'data': serialized_cliente.data})
+    return Response({'statusCode': '200', 'isVendedor': cliente.clienteIsVendedor, 'data': serialized_cliente.data})
 
 def send_email(request):
 
     if request.method == 'POST':
+        email = request.POST.get('email')
+
         try:
-            email = request.POST.get('email')
-        
             cliente = Cliente.objects.get(clienteEmail = email)
 
         except Cliente.DoesNotExist:
-            return redirect('/user-not-found')
+            try:
+                vendedor = Vendedor.objects.get(vendedorEmail = email)
+            except Vendedor.DoesNotExist:
+                return redirect('/user-not-found')
+
+            d = Context({'email': email})
+
+            subject = 'Recuperar senha ViaSudeste'
+            from_email = 'lunettagui@gmail.com'
+            to_email = vendedor.vendedorEmail
+
+            nome = vendedor.vendedorNome
+            link = 'https://powerful-shelf-46576.herokuapp.com/redefine-password/true/' + str(vendedor.vendedorId)
+
+            text_content = 'Olá ' + nome + '! Clique no link abaixo para redefinir sua senha!\n\n' + link
+
+            msg = EmailMultiAlternatives(subject, text_content, from_email, [to_email])
+            msg.send()
+
+            return redirect('/email-sent')
 
         d = Context({'email': email})
 
@@ -789,7 +833,7 @@ def send_email(request):
         to_email = cliente.clienteEmail
 
         nome = cliente.clienteNome
-        link = 'https://powerful-shelf-46576.herokuapp.com/redefine-password/' + str(cliente.clienteId)
+        link = 'https://powerful-shelf-46576.herokuapp.com/redefine-password/false/' + str(cliente.clienteId)
 
         text_content = 'Olá ' + nome + '! Clique no link abaixo para redefinir sua senha!\n\n' + link
 
@@ -811,7 +855,7 @@ def email_sent(request):
 
     return render(request, 'viasudesteapp/email_sent.html')
 
-def redefine(request, id):
+def redefine(request, id, is_vend):
 
     if request.method == 'POST':
         password = request.POST.get('password')
@@ -820,9 +864,14 @@ def redefine(request, id):
         if password != password_confirm:
             return render(request, 'viasudesteapp/wrong_pass.html')
         else:
-            cliente = Cliente.objects.get(clienteId = id)
-            cliente.clienteSenha = password
-            cliente.save()
+            if is_vend == "true":
+                vendedor = Vendedor.objects.get(vendedorId = id)
+                vendedor.vendedorSenha = password
+                vendedor.save()
+            else:
+                cliente = Cliente.objects.get(clienteId = id)
+                cliente.clienteSenha = password
+                cliente.save()
 
             return redirect('/password-redefined')
 
