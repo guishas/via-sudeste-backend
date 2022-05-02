@@ -394,7 +394,6 @@ def create_cliente(request):
             cliente.clienteEstadoId = data["clienteEstadoId"]
             cliente.clienteLatitude = data["clienteLatitude"]
             cliente.clienteLongitude = data["clienteLongitude"]
-            cliente.clienteIsVendedor = data["clienteIsVendedor"]
             cliente.save()
 
             serialized_cliente = ClienteSerializer(cliente)
@@ -734,7 +733,6 @@ def create_vendedor(request):
             vendedor.vendedorEstadoId = data["vendedorEstadoId"]
             vendedor.vendedorLatitude = data["vendedorLatitude"]
             vendedor.vendedorLongitude = data["vendedorLongitude"]
-            vendedor.vendedorIsVendedor = data["vendedorIsVendedor"]
             vendedor.save()
 
             serialized_vendedor = VendedorSerializer(vendedor)
