@@ -128,7 +128,7 @@ class ClienteCreateSchemaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cliente
         fields = ["clienteId", "clienteNome", "clienteEmail", "clienteSenha", "clienteCelular", "clienteCPF",
-         "clienteCEP", "clienteEndereco", "clienteCidadeId", "clienteEstadoId", "clienteLatitude", "clienteLongitude", "clienteIsVendedor"]
+         "clienteCEP", "clienteEndereco", "clienteCidadeId", "clienteEstadoId", "clienteLatitude", "clienteLongitude"]
 
 class ClienteSchemaSerializer(serializers.ModelSerializer):
 
@@ -184,4 +184,4 @@ class VendedorSchemaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vendedor
         fields = ["vendedorId", "vendedorNome", "vendedorEmail", "vendedorCelular", "vendedorCPF",
-         "vendedorCEP", "vendedorEndereco", "vendedorCidadeId", "vendedorEstadoId", "vendedorLatitude", "vendedorLongitude", "vendedorIsVendedor"]
+         "vendedorCEP", "vendedorEndereco", "vendedorCidadeId", "vendedorEstadoId", "vendedorLatitude", "vendedorLongitude"]
