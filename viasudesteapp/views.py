@@ -398,7 +398,7 @@ def create_cliente(request):
             cliente.save()
 
             serialized_cliente = ClienteSerializer(cliente)
-            return Response(serialized_cliente.data)
+            return Response({'statusCode': '200', 'data': serialized_cliente.data})
         return Response({'statusCode': '400', 'errorMessage': 'Já existe um usuário com esse email'})
     return Response({'statusCode': '400', 'errorMessage': 'Já existe um usuário com esse email'})
 
@@ -738,7 +738,7 @@ def create_vendedor(request):
             vendedor.save()
 
             serialized_vendedor = VendedorSerializer(vendedor)
-            return Response(serialized_vendedor.data)
+            return Response({'statusCode': '200', 'data': serialized_vendedor.data})
         return Response({'statusCode': '400', 'errorMessage': 'Já existe um usuário com esse email'})
     return Response({'statusCode': '400', 'errorMessage': 'Já existe um usuário com esse email'})
 
