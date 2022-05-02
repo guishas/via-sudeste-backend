@@ -815,8 +815,13 @@ def send_email(request):
             subject = 'Recuperar senha ViaSudeste'
             from_email = 'lunettagui@gmail.com'
             to_email = vendedor.vendedorEmail
+            print(to_email)
 
             nome = vendedor.vendedorNome
+
+            if nome == None:
+                nome = vendedor.vendedorEmail
+
             link = 'https://powerful-shelf-46576.herokuapp.com/redefine-password/true/' + str(vendedor.vendedorId)
 
             text_content = 'Olá ' + nome + '! Clique no link abaixo para redefinir sua senha!\n\n' + link
@@ -833,6 +838,9 @@ def send_email(request):
         to_email = cliente.clienteEmail
 
         nome = cliente.clienteNome
+        if nome == None:
+            nome = cliente.clienteEmail
+            
         link = 'https://powerful-shelf-46576.herokuapp.com/redefine-password/false/' + str(cliente.clienteId)
 
         text_content = 'Olá ' + nome + '! Clique no link abaixo para redefinir sua senha!\n\n' + link
