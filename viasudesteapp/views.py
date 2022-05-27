@@ -652,10 +652,12 @@ def create_produto(request):
     produto.produtoDescricao = data["produtoDescricao"]
     produto.produtoPreco = data["produtoPreco"]
     produto.produtoQuantidade = data["produtoQuantidade"]
+    produto.produtoAvgScore = 0
+    produto.produtoQuantidadeNotas = 0
 
     produto.save()
 
-    serialized_produto = ProdutoSchemaSerializer(produto)
+    serialized_produto = ProdutoSerializer(produto)
 
     return Response(serialized_produto.data)
 
