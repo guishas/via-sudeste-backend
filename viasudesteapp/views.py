@@ -646,6 +646,7 @@ def create_produto(request):
     data = request.data
 
     produto = Produto()
+    produto.produtoVendedorId = data["produtoVendedorId"]
     produto.produtoCategoriaId = data["produtoCategoriaId"]
     produto.produtoNome = data["produtoNome"]
     produto.produtoDescricao = data["produtoDescricao"]
