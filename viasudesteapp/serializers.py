@@ -45,6 +45,12 @@ class WishlistSchemaSerializer(serializers.ModelSerializer):
 class ProdutoSerializer(serializers.ModelSerializer):
 
     produtoCategoria = serializers.SerializerMethodField('get_categoria')
+    produtoVendedor = serializers.SerializerMethodField('get_vendedor')
+
+    def get_vendedor(self, produto_object):
+        vendedor = Vendedor.objects.get(vendedorId = produto_object.produtoVendedorId)
+        serialized_vendedor = VendedorSerializer(vendedor)
+        return serialized_vendedor.data
 
     def get_categoria(self, produto_object):
         categoria = Categoria.objects.get(categoriaId = produto_object.produtoCategoriaId)
@@ -53,7 +59,7 @@ class ProdutoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Produto
-        fields = ['produtoId', 'produtoVendedorId', 'produtoCategoria', 'produtoNome', 'produtoDescricao',
+        fields = ['produtoId', 'produtoVendedor', 'produtoCategoria', 'produtoNome', 'produtoDescricao',
          'produtoPreco', 'produtoQuantidade', 'produtoAvgScore', 'produtoQuantidadeNotas']
 
 class ProdutoSchemaSerializer(serializers.ModelSerializer):
