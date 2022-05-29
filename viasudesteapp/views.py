@@ -401,6 +401,8 @@ def create_cliente(request):
             cliente.clienteEstadoId = data["clienteEstadoId"]
             cliente.clienteLatitude = data["clienteLatitude"]
             cliente.clienteLongitude = data["clienteLongitude"]
+            cliente.clienteSenha = hashlib.md5(data["clienteSenha"]).hexdigest()
+
             cliente.save()
 
             serialized_cliente = ClienteSerializer(cliente)
@@ -742,6 +744,7 @@ def create_vendedor(request):
             vendedor.vendedorEstadoId = data["vendedorEstadoId"]
             vendedor.vendedorLatitude = data["vendedorLatitude"]
             vendedor.vendedorLongitude = data["vendedorLongitude"]
+            vendedor.vendedorSenha = hashlib.md5(data["vendedorSenha"]).hexdigest()
             vendedor.save()
 
             serialized_vendedor = VendedorSerializer(vendedor)

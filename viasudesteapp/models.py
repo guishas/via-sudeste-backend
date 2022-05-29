@@ -131,10 +131,6 @@ class Vendedor(models.Model):
     vendedorIsVendedor = models.BooleanField(default=True, null=True)
     createdAt = models.DateTimeField(auto_now_add = True, null=True)
 
-    def save(self, *args, **kwargs):
-        self.vendedorSenha = hashlib.md5(self.vendedorSenha.encode()).hexdigest()
-        super(Vendedor, self).save(*args, **kwargs)
-
     def __str__(self):
         return '{}'.format(self.vendedorId)
 
@@ -153,10 +149,6 @@ class Cliente(models.Model):
     clienteLongitude = models.FloatField(null=True)
     clienteIsVendedor = models.BooleanField(default=False, null=True)
     createdAt = models.DateTimeField(auto_now_add = True, null=True)
-
-    def save(self, *args, **kwargs):
-        self.clienteSenha = hashlib.md5(self.clienteSenha.encode()).hexdigest()
-        super(Cliente, self).save(*args, **kwargs)
 
     def __str__(self):
         return '{}'.format(self.clienteId)
