@@ -46,6 +46,16 @@ class ProdutoSerializer(serializers.ModelSerializer):
 
     produtoCategoria = serializers.SerializerMethodField('get_categoria')
     produtoVendedor = serializers.SerializerMethodField('get_vendedor')
+    produtoImagem = serializers.SerializerMethodField('get_imagem')
+
+    def get_imagem(self, produto_object):
+        try:
+            imagem = Media.objects.get(produtoId = produto_object.produtoId)
+            serialized_imagem = MediaSerializer(imagem)
+        except Media.DoesNotExist:
+            return None
+
+        return "https://powerful-shelf-46576.herokuapp.com" + serialized_imagem.data["imagem"]
 
     def get_vendedor(self, produto_object):
         vendedor = Vendedor.objects.get(vendedorId = produto_object.produtoVendedorId)
@@ -60,7 +70,7 @@ class ProdutoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Produto
         fields = ['produtoId', 'produtoVendedor', 'produtoCategoria', 'produtoNome', 'produtoDescricao',
-         'produtoPreco', 'produtoQuantidade', 'produtoAvgScore', 'produtoQuantidadeNotas']
+         'produtoPreco', 'produtoQuantidade', 'produtoAvgScore', 'produtoQuantidadeNotas', 'produtoImagem']
 
 class ProdutoSchemaSerializer(serializers.ModelSerializer):
     class Meta:
