@@ -25,6 +25,7 @@ class Cidade(models.Model):
         return '{}'.format(self.nome)
 
 class Wishlist(models.Model):
+    wishlistId = models.UUIDField(primary_key = True, default = uuid.uuid4, editable = False)
     clienteId = models.CharField(max_length=200)
     produtoId = models.CharField(max_length=200)
 

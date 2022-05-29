@@ -135,10 +135,17 @@ def get_user_wishlist(request, user_id):
     serialized_wishlist = WishlistSerializer(wish_list, many=True)
     
     product_list = []
+    ids_list = []
     for item in serialized_wishlist.data:
         product_list.append(Produto.objects.get(produtoId = item['produtoId']))
+        ids_list.append(item['wishlistId'])
 
     serialized_produtos = ProdutoSerializer(product_list, many=True)
+
+    i = 0
+    for prod in serialized_produtos.data:
+        prod["wishlistId"] = ids_list[i]
+        i+=1
 
     return Response(serialized_produtos.data)
 

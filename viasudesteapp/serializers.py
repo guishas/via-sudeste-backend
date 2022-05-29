@@ -32,7 +32,7 @@ class CidadeSchemaSerializer(serializers.ModelSerializer):
 class WishlistSerializer(serializers.ModelSerializer):
     class Meta:
         model = Wishlist
-        fields = ['clienteId', 'produtoId']
+        fields = '__all__'
 
 class WishlistSchemaSerializer(serializers.ModelSerializer):
 
