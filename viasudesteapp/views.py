@@ -4,7 +4,7 @@ from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
 from django.http import Http404
 from .models import Categoria, Cidade, Cliente, Estado, NotaFiscal, Pagamento, Pedido, Produto, Review, Vendedor, Wishlist, Media
-from .serializers import CategoriaSchemaSerializer, CategoriaSerializer, CidadeSchemaSerializer, CidadeSerializer, ClienteCreateSchemaSerializer, ClienteSchemaSerializer, ClienteSerializer, EstadoSchemaSerializer, EstadoSerializer, MediaSerializer, NotaFiscalSchemaSerializer, NotaFiscalSerializer, PagamentoSchemaSerializer, PagamentoSerializer, PedidoSchemaSerializer, PedidoSerializer, ProdutoSchemaSerializer, ProdutoSerializer, ProdutoUpdateSchemaSerializer, ReviewSchemaSerializer, ReviewSerializer, VendedorSchemaSerializer, VendedorSerializer, WishlistSchemaSerializer, WishlistSerializer
+from .serializers import CategoriaSchemaSerializer, CategoriaSerializer, CidadeSchemaSerializer, CidadeSerializer, ClienteCreateSchemaSerializer, ClienteSchemaSerializer, ClienteSerializer, EstadoSchemaSerializer, EstadoSerializer, MediaSerializer, NotaFiscalSchemaSerializer, NotaFiscalSerializer, PagamentoSchemaSerializer, PagamentoSerializer, PedidoSchemaSerializer, PedidoSerializer, ProdutoSchemaSerializer, ProdutoSerializer, ProdutoUpdateSchemaSerializer, ReviewPostSerializer, ReviewSchemaSerializer, ReviewSerializer, VendedorSchemaSerializer, VendedorSerializer, WishlistSchemaSerializer, WishlistSerializer
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 import hashlib
@@ -256,7 +256,7 @@ def get_reviews_by_product_id(request, product_id):
 
     return Response(serialized_reviews.data)
 
-@swagger_auto_schema(method='post', request_body=ReviewSerializer, responses={200: openapi.Response('Success')})
+@swagger_auto_schema(method='post', request_body=ReviewPostSerializer, responses={200: openapi.Response('Success')})
 @api_view(['POST'])
 def create_review(request):
     data = request.data

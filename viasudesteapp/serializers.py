@@ -106,6 +106,20 @@ class MediaSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ReviewSerializer(serializers.ModelSerializer):
+
+    reviewCliente = serializers.SerializerMethodField('get_cliente')
+
+    def get_cliente(self, review_object):
+        cliente = Cliente.objects.get(clienteId = review_object.clienteId)
+        serialized_cliente = ClienteSerializer(cliente)
+        return serialized_cliente.data
+
+    class Meta:
+        model = Review
+        fields = ['reviewId', 'reviewCliente', 'pedidoId', 'produtoId', 'reviewTitulo', 'reviewComentario', 'reviewScore']
+
+class ReviewPostSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Review
         fields = '__all__'
