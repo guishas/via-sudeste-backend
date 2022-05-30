@@ -596,6 +596,7 @@ def create_pedido(request):
     pedido.pedidoDataTransportadora = data["pedidoDataTransportadora"]
     pedido.pedidoDataPrevista = data["pedidoDataPrevista"]
     pedido.pedidoDataEntregue = data["pedidoDataEntregue"]
+    pedido.pedidoAvaliado = False
     pedido.save()
 
     serialized_pedido = PedidoSerializer(pedido)
@@ -627,6 +628,7 @@ def update_pedido(request):
     pedido.pedidoDataTransportadora = data["pedidoDataTransportadora"]
     pedido.pedidoDataPrevista = data["pedidoDataPrevista"]
     pedido.pedidoDataEntregue = data["pedidoDataEntregue"]
+    pedido.pedidoAvaliado = data["pedidoAvaliado"]
     pedido.save()
 
     serialized_pedido = PedidoSerializer(pedido)

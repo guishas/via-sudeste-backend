@@ -90,6 +90,7 @@ class Pedido(models.Model):
     pedidoDataTransportadora = models.DateTimeField(blank = True)
     pedidoDataPrevista = models.DateTimeField()
     pedidoDataEntregue = models.DateTimeField(blank = True)
+    pedidoAvaliado = models.BooleanField(default=False)
 
     def __Str__(self):
         return '{}'.format(self.pedidoId)
