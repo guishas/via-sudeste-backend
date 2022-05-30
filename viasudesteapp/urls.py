@@ -24,6 +24,7 @@ urlpatterns = [
     path('api/medias/delete/<str:media_id>', views.delete_media),
     path('api/reviews/', views.get_reviews),
     path('api/reviews/<str:product_id>', views.get_reviews_by_product_id),
+    path('api/reviews/clientes/<str:cliente_id>', views.get_reviews_by_cliente_id),
     path('api/reviews/adicionar/', views.create_review),
     path('api/reviews/deletar/<str:review_id>', views.delete_review_by_id),
     path('api/reviews/atualizar/', views.update_review),

@@ -4,7 +4,7 @@ from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
 from django.http import Http404
 from .models import Categoria, Cidade, Cliente, Estado, NotaFiscal, Pagamento, Pedido, Produto, Review, Vendedor, Wishlist, Media
-from .serializers import CategoriaSchemaSerializer, CategoriaSerializer, CidadeSchemaSerializer, CidadeSerializer, ClienteCreateSchemaSerializer, ClienteSchemaSerializer, ClienteSerializer, EstadoSchemaSerializer, EstadoSerializer, MediaSerializer, NotaFiscalSchemaSerializer, NotaFiscalSerializer, PagamentoSchemaSerializer, PagamentoSerializer, PedidoSchemaSerializer, PedidoSerializer, ProdutoSchemaSerializer, ProdutoSerializer, ProdutoUpdateSchemaSerializer, ReviewPostSerializer, ReviewSchemaSerializer, ReviewSerializer, VendedorSchemaSerializer, VendedorSerializer, WishlistSchemaSerializer, WishlistSerializer
+from .serializers import CategoriaSchemaSerializer, CategoriaSerializer, CidadeSchemaSerializer, CidadeSerializer, ClienteCreateSchemaSerializer, ClienteSchemaSerializer, ClienteSerializer, EstadoSchemaSerializer, EstadoSerializer, MediaSerializer, NotaFiscalSchemaSerializer, NotaFiscalSerializer, PagamentoSchemaSerializer, PagamentoSerializer, PedidoSchemaSerializer, PedidoSerializer, ProdutoSchemaSerializer, ProdutoSerializer, ProdutoUpdateSchemaSerializer, ReviewPostSerializer, ReviewProductSerializer, ReviewSchemaSerializer, ReviewSerializer, VendedorSchemaSerializer, VendedorSerializer, WishlistSchemaSerializer, WishlistSerializer
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 import hashlib
@@ -253,6 +253,13 @@ def get_reviews(request):
 def get_reviews_by_product_id(request, product_id):
     reviews = Review.objects.filter(produtoId = product_id)
     serialized_reviews = ReviewSerializer(reviews, many=True)
+
+    return Response(serialized_reviews.data)
+
+@api_view(['GET'])
+def get_reviews_by_cliente_id(request, cliente_id):
+    reviews = Review.objects.filter(clienteId = cliente_id)
+    serialized_reviews = ReviewProductSerializer(reviews, many=True)
 
     return Response(serialized_reviews.data)
 

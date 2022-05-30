@@ -118,6 +118,25 @@ class ReviewSerializer(serializers.ModelSerializer):
         model = Review
         fields = ['reviewId', 'reviewCliente', 'pedidoId', 'produtoId', 'reviewTitulo', 'reviewComentario', 'reviewScore']
 
+class ReviewProductSerializer(serializers.ModelSerializer):
+
+    reviewCliente = serializers.SerializerMethodField('get_cliente')
+    reviewProduto = serializers.SerializerMethodField('get_produto')
+
+    def get_produto(self, review_object):
+        produto = Produto.objects.get(produtoId = review_object.produtoId)
+        serialized_produto = ProdutoSerializer(produto)
+        return serialized_produto.data
+
+    def get_cliente(self, review_object):
+        cliente = Cliente.objects.get(clienteId = review_object.clienteId)
+        serialized_cliente = ClienteSerializer(cliente)
+        return serialized_cliente.data
+
+    class Meta:
+        model = Review
+        fields = ['reviewId', 'reviewCliente', 'pedidoId', 'reviewProduto', 'reviewTitulo', 'reviewComentario', 'reviewScore']
+
 class ReviewPostSerializer(serializers.ModelSerializer):
 
     class Meta:
