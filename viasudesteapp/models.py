@@ -84,7 +84,7 @@ class Pedido(models.Model):
     vendedorId = models.CharField(max_length=200)
     pagamentoId = models.CharField(max_length=200)
     pedidoQuantidadeProduto = models.IntegerField()
-    pedidoStatus = models.BooleanField()
+    pedidoStatus = models.CharField(max_length=200)
     pedidoDataCompra = models.DateTimeField(auto_now_add = True)
     pedidoDataPagamento = models.DateTimeField(blank = True)
     pedidoDataTransportadora = models.DateTimeField(blank = True)
