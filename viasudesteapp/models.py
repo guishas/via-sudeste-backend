@@ -82,14 +82,13 @@ class Pedido(models.Model):
     produtoId = models.CharField(max_length=200)
     clienteId = models.CharField(max_length=200)
     vendedorId = models.CharField(max_length=200)
-    pagamentoId = models.CharField(max_length=200)
     pedidoQuantidadeProduto = models.IntegerField()
     pedidoStatus = models.CharField(max_length=200)
     pedidoDataCompra = models.DateTimeField(auto_now_add = True)
-    pedidoDataPagamento = models.DateTimeField(blank = True)
-    pedidoDataTransportadora = models.DateTimeField(blank = True)
-    pedidoDataPrevista = models.DateTimeField()
-    pedidoDataEntregue = models.DateTimeField(blank = True)
+    pedidoDataPagamento = models.DateTimeField(blank = True, null=True)
+    pedidoDataTransportadora = models.DateTimeField(blank = True, null=True)
+    pedidoDataPrevista = models.DateTimeField(blank=True, null=True)
+    pedidoDataEntregue = models.DateTimeField(blank = True, null=True)
     pedidoAvaliado = models.BooleanField(default=False)
 
     def __Str__(self):
