@@ -217,7 +217,7 @@ class PedidoSchemaSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Pedido
-        fields = ['pedidoId', 'produtoId', 'clienteId', 'vendedorId', 'pagamentoId', 'pedidoQuantidadeProduto',
+        fields = ['pedidoId', 'produtoId', 'clienteId', 'vendedorId', 'pedidoQuantidadeProduto',
                   'pedidoStatus', 'pedidoDataCompra', 'pedidoDataPagamento', 'pedidoDataTransportadora', 'pedidoDataPrevista',
                   'pedidoDataEntregue']
 
