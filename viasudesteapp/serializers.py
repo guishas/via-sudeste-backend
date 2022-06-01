@@ -207,9 +207,25 @@ class PagamentoSchemaSerializer(serializers.ModelSerializer):
                   'pagamentoValorTotal', 'pagamentoFinalCartao']
 
 class PedidoSerializer(serializers.ModelSerializer):
+
+    pedidoProduto = serializers.SerializerMethodField('get_produto')
+    pedidoVendedor = serializers.SerializerMethodField('get_vendedor')
+    
+    def get_produto(self, pedido_object):
+        produto = Produto.objects.get(produtoId = pedido_object.produtoId)
+        serialized_produto = ProdutoSerializer(produto)
+        return serialized_produto.data
+
+    def get_vendedor(self, pedido_object):
+        vendedor = Vendedor.objects.get(vendedorId = pedido_object.vendedorId)
+        serialized_vendedor = VendedorSerializer(vendedor)
+        return serialized_vendedor.data
+
     class Meta:
         model = Pedido
-        fields = '__all__'
+        fields = ['pedidoId', 'pedidoProduto', 'clienteId', 'pedidoVendedor', 'pedidoQuantidadeProduto',
+                  'pedidoStatus', 'pedidoDataCompra', 'pedidoDataPagamento', 'pedidoDataTransportadora', 'pedidoDataPrevista',
+                  'pedidoDataEntregue']
 
 class PedidoSchemaSerializer(serializers.ModelSerializer):
 

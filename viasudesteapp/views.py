@@ -573,8 +573,8 @@ def get_pedido_by_id(request, pedido_id):
     return Response(serialized_pedido.data)
 
 @api_view(['GET'])
-def get_pedidos_by_user_id(request, user_id):
-    pedidos = Pedido.objects.filter(userId = user_id)
+def get_pedidos_by_user_id(request, cliente_id):
+    pedidos = Pedido.objects.filter(clienteId = cliente_id)
 
     serialized_pedidos = PedidoSerializer(pedidos, many=True)
 
