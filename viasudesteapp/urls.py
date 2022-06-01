@@ -46,6 +46,7 @@ urlpatterns = [
     path('api/categorias/atualizar/', views.update_categoria),
     path('api/pagamentos/', views.get_pagamentos),
     path('api/pagamentos/<str:pagamento_id>', views.get_pagamento_by_id),
+    path('api/pagamentos/pedido/<str:pedido_id>', views.get_pagamento_by_pedido_id),
     path('api/pagamentos/adicionar/', views.create_pagamento),
     path('api/pagamentos/deletar/<str:pagamento_id>', views.delete_pagamento),
     path('api/pagamentos/atualizar/', views.update_pagamento),

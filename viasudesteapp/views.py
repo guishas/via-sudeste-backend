@@ -514,6 +514,14 @@ def get_pagamento_by_id(request, pagamento_id):
 
     return Response(serialized_pagamento.data)
 
+@api_view(['GET'])
+def get_pagamento_by_pedido_id(request, pedido_id):
+    pagamento = Pagamento.objects.get(pedidoId = pedido_id)
+
+    serialized_pagamento = PagamentoSerializer(pagamento)
+
+    return Response(serialized_pagamento.data)
+
 @swagger_auto_schema(method='post', request_body=PagamentoSerializer, responses={200: openapi.Response('Success')})
 @api_view(['POST'])
 def create_pagamento(request):
