@@ -657,6 +657,14 @@ def get_produtos_by_categoria_id(request, categoria_id):
 
     return Response(serialized_produtos.data)
 
+@api_view(['GET'])
+def get_produtos_by_vendedor_id(request, vendedor_id):
+    produtos = Produto.objects.filter(vendedorId = vendedor_id)
+
+    serialized_produtos = ProdutoSerializer(produtos, many=True)
+
+    return Response(serialized_produtos.data)
+
 @swagger_auto_schema(method='post', request_body=ProdutoSchemaSerializer, responses={200: openapi.Response('Success')})
 @api_view(['POST'])
 def create_produto(request):

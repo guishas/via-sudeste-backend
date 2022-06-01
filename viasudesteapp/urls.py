@@ -58,6 +58,7 @@ urlpatterns = [
     path('api/produtos/', views.get_produtos),
     path('api/produtos/<str:produto_id>', views.get_produto_by_id),
     path('api/produtos/categoria/<str:categoria_id>', views.get_produtos_by_categoria_id),
+    path('api/produtos/vendedor/<str:vendedor_id>', views.get_produtos_by_vendedor_id),
     path('api/produtos/adicionar/', views.create_produto),
     path('api/produtos/deletar/<str:produto_id>', views.delete_produto_by_id),
     path('api/produtos/atualizar/', views.update_produto),
