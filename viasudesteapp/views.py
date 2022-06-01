@@ -629,7 +629,6 @@ def update_pedido(request):
     pedido.vendedorId = data["vendedorId"]
     pedido.pedidoQuantidadeProduto = data["pedidoQuantidadeProduto"]
     pedido.pedidoStatus = data["pedidoStatus"]
-    pedido.pedidoDataCompra = data["pedidoDataCompra"]
     pedido.pedidoDataPagamento = data["pedidoDataPagamento"]
     pedido.pedidoDataTransportadora = data["pedidoDataTransportadora"]
     pedido.pedidoDataPrevista = data["pedidoDataPrevista"]
