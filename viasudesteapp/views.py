@@ -694,13 +694,13 @@ def create_produto(request):
 
 @api_view(['DELETE'])
 def delete_all_pedidos(request):
-    pedidos = Pedido.objects.get()
+    pedidos = Pedido.objects.all()
 
     for pedido in pedidos:
         pedido.delete()
 
     return Response('Deletados com sucesso')
-    
+
 @api_view(['DELETE'])
 def delete_produto_by_id(request, produto_id):
     produto = Produto.objects.get(produtoId = produto_id)
