@@ -665,7 +665,7 @@ def get_produtos_by_categoria_id(request, categoria_id):
 
 @api_view(['GET'])
 def get_produtos_by_vendedor_id(request, vendedor_id):
-    produtos = Produto.objects.filter(vendedorId = vendedor_id)
+    produtos = Produto.objects.filter(produtoVendedorId = vendedor_id)
 
     serialized_produtos = ProdutoSerializer(produtos, many=True)
 
