@@ -55,6 +55,7 @@ urlpatterns = [
     path('api/pedidos/cliente/<str:cliente_id>', views.get_pedidos_by_user_id),
     path('api/pedidos/adicionar/', views.create_pedido),
     path('api/pedidos/deletar/<str:pedido_id>', views.delete_pedido_by_id),
+    path('api/pedidos/deletar/all/', views.delete_all_pedidos),
     path('api/pedidos/atualizar/', views.update_pedido),
     path('api/produtos/', views.get_produtos),
     path('api/produtos/<str:produto_id>', views.get_produto_by_id),
