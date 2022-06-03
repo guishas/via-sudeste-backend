@@ -807,7 +807,6 @@ def update_vendedor(request):
     vendedor.vendedorEstadoId = data["vendedorEstadoId"]
     vendedor.vendedorLatitude = data["vendedorLatitude"]
     vendedor.vendedorLongitude = data["vendedorLongitude"]
-    vendedor.vendedorIsVendedor = data["vendedorIsVendedor"]
     vendedor.save()
 
     serialized_vendedor = VendedorSerializer(vendedor)
