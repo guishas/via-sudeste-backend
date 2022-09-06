@@ -12,7 +12,7 @@ Nesse repositório encontra-se o backend do aplicativo desenvolvido em Python us
 
 * [Instalar o Python](https://python.org.br/instalacao-windows/)
 * [Sobre o Django Framework](https://www.djangoproject.com/)
-* [Documentação](www.google.com)
+* [Documentação](https://guishas.github.io/via-sudeste-backend/)
 
 Para atualizações sobre o projeto, novas versões, melhorias e etc, siga-nos no [Twitter](www.twitter.com).
 Sobre o que queremos para nosso futuro e o que as próximas versões devem conter, acompanhe nosso [Roadmap público](http://localhost:8000/roadmap/).
@@ -21,10 +21,10 @@ Sobre o que queremos para nosso futuro e o que as próximas versões devem conte
 
 Existem diversas formas de contribuir com o nosso projeto, são elas:
 
-* [Revisão de Pull Requests](www.google.com)
-* [Abertura, discussão e testes de Issues](www.google.com)
-* [Documentação](http://localhost:8000/)
-* [Código](http://localhost:8000/contributing/)
+* [Revisão de Pull Requests](https://guishas.github.io/via-sudeste-backend/)
+* [Abertura, discussão e testes de Issues](https://guishas.github.io/via-sudeste-backend/)
+* [Documentação](https://guishas.github.io/via-sudeste-backend/)
+* [Código](https://guishas.github.io/via-sudeste-backend/)
 
 Sinta-se a vontade em explorar todas essas opções e escolher a que você melhor se encaixa para contribuir!
 
