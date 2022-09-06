@@ -27,3 +27,19 @@ Existem diversas formas de contribuir com o nosso projeto, são elas:
 * [Código](http://localhost:8000/contributing/)
 
 Sinta-se a vontade em explorar todas essas opções e escolher a que você melhor se encaixa para contribuir!
+
+## Swagger API
+
+O projeto possui o Swagger Framework como um facilitador no desenvolvimento da API REST. 
+
+<h1 align="center">
+  <picture>
+    <img alt="Via Sudeste Logo" src="resources/django-swagger-1.png">
+  </picture>
+</h1>
+
+<h1 align="center">
+  <picture>
+    <img alt="Via Sudeste Logo" src="resources/django-swagger-2.png">
+  </picture>
+</h1>
