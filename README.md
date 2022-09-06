@@ -15,7 +15,7 @@ Nesse repositório encontra-se o backend do aplicativo desenvolvido em Python us
 * [Documentação](https://guishas.github.io/via-sudeste-backend/)
 
 Para atualizações sobre o projeto, novas versões, melhorias e etc, siga-nos no [Twitter](www.twitter.com).
-Sobre o que queremos para nosso futuro e o que as próximas versões devem conter, acompanhe nosso [Roadmap público](http://localhost:8000/roadmap/).
+Sobre o que queremos para nosso futuro e o que as próximas versões devem conter, acompanhe nosso [Roadmap público](https://guishas.github.io/via-sudeste-backend/roadmap).
 
 ## Contribuir
 
