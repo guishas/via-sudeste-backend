@@ -1,3 +1,10 @@
 site_name: ViaSudeste Backend - Documentação
 site_description: Documentação para usuário e desenvolvedor para o backend do aplicativo ViaSudeste
 site_url: https://example.com/
+
+nav:
+  - Documentação de usuário:
+    - 'Clonando e preparando o ambiente': 'cloning-prep.md'
+    - 'Como usar': 'changes-testing.md'
+  - Documentação de desenvolvedor:
+    - 'Padrões de Issues e Pull Requests': 'issue-pr.md' 

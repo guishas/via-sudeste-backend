@@ -1,5 +1,5 @@
 # ViaSudeste Backend
-> Bem-vindo a Documentação do backend do aplicativo ViaSudeste, aqui você encontrará tudo o que precisa para usar ou contribuir com o projeto. Se você tem alguma sugestão, percebeu algo que está faltando ou algo que está desatualizado ou irrelevante, abra uma [issue](www.google.com) para contribuir com nosso projeto!
+> Bem-vindo a Documentação do backend do aplicativo ViaSudeste, aqui você encontrará tudo o que precisa para usar ou contribuir com o projeto. Se você tem alguma sugestão, percebeu algo que está faltando ou algo que está desatualizado ou irrelevante, abra uma [issue](https://github.com/guishas/via-sudeste-backend/issues) para contribuir com nosso projeto!
 
 ## Nosso Github
 
@@ -8,16 +8,10 @@
 
 ## Features
 
-- **Instruções para rodar o projeto na sua máquina**
-    - Instalar as dependências.
-    - Rodar localmente.
-    - Fazer mudanças.
-    - Testar localmente
-
-- **Instruções para contribuir com o projeto**
-    - Documentação de usuário
-    - Documentação de desenvolvedor
-    - Padrões de Issues e Pull Requests
-    - Como contribuir com a documentação
+- Clonando e preparando o ambiente
+- Mudanças e testes
+- Contribuindo com o código
+- Contribuindo com a documentação
+- Roadmap Público
 
 O objetivo dessa documentação é sanar dúvidas sobre o projeto no geral
