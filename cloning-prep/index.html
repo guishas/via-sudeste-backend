@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        <link rel="canonical" href="https://guishas.github.io/cloning-prep/">
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Clonando e preparando o ambiente - ViaSudeste Backend - Documentação</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css">
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">ViaSudeste Backend - Documentação</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="dropdown active">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Documentação de usuário <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="./" class="dropdown-item active">Clonando e preparando o ambiente</a>
+</li>
+                                    
+<li>
+    <a href="../changes-testing/" class="dropdown-item">Como usar</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Documentação de desenvolvedor <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../issue-pr/" class="dropdown-item">Padrões de Issues e Pull Requests</a>
+</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" class="nav-link disabled">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../changes-testing/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#clonando-e-preparando-o-ambiente" class="nav-link">Clonando e preparando o ambiente</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#clonando" class="nav-link">Clonando</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#preparando-o-ambiente" class="nav-link">Preparando o ambiente</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="clonando-e-preparando-o-ambiente">Clonando e preparando o ambiente</h1>
+<p>Nesta página iremos te mostrar um passo a passo de como clonar e preparar o ambiente para começar a mexer no projeto.</p>
+<h2 id="clonando"><strong>Clonando</strong></h2>
+<p>Para começar, clone o <a href="https://github.com/guishas/via-sudeste-backend">repositório do github</a> em uma pasta de sua escolha. Se tiver dúvida de como fazer isso, siga o tutorial abaixo, caso contrário pule para o segundo passo.</p>
+<p>Antes de mais nada, <a href="https://python.org.br/instalacao-windows/">instale o Python</a> se você ainda não tiver ele instalado na sua máquina.</p>
+<h4 id="tutorial">Tutorial</h4>
+<p>1 - Abra o terminal apertando <code>Windows + R</code> e digitando <code>cmd</code>.
+<br>
+<br>
+2 - Navegue até a pasta de escolha para clonar o repositório utilizando o comando <code>cd &lt;nome da pasta&gt;</code>.
+<br>
+<br>
+3 - Clone o repositório com o comando:</p>
+<pre><code>git clone git@github.com:guishas/via-sudeste-backend.git
+</code></pre>
+<p>4 - Entre na pasta do repositório (ela se chama <strong>via-sudeste-backend</strong>).
+<br>
+<br>
+5 - Instale as bibliotecas necessárias com o comando:</p>
+<pre><code>pip install -r requirements.txt
+</code></pre>
+<h2 id="preparando-o-ambiente"><strong>Preparando o ambiente</strong></h2>
+<p>Agora vamos configurar algumas coisas e preparar o ambiente para começar a explorar e mexer no projeto.</p>
+<p>Abra o arquivo "settings.py" na pasta "viasudeste/" e confira se as variáveis das imagens abaixo estão como na imagem. Se não estiverem, corrija.</p>
+<p><img alt="DEBUG" src="../imgs/debug-docs.png" />
+<img alt="MIDDLEWARE" src="../imgs/middleware-docs.png" />
+<img alt="DATABASES" src="../imgs/database-docs.png" /></p>
+<p>Por fim, podemos rodar o projeto e começar a explorá-lo. Vá para a raiz do repositório e rode o comando no terminal:</p>
+<pre><code>python manage.py runserver
+</code></pre>
+<p>Você deve receber uma mensagem assim no seu terminal:</p>
+<p><img alt="TERMINAL" src="../imgs/terminal-runserver.png" /></p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
